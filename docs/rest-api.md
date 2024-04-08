@@ -2,15 +2,15 @@
 
 ## FreqUI
 
-Freqtrade provides a builtin webserver, which can serve [FreqUI](https://github.com/freqtrade/frequi), the freqtrade UI.
+Tradescope provides a builtin webserver, which can serve [FreqUI](https://github.com/tradescope/frequi), the tradescope UI.
 
-By default, the UI is not included in the installation (except for docker images), and must be installed explicitly with `freqtrade install-ui`.
+By default, the UI is not included in the installation (except for docker images), and must be installed explicitly with `tradescope install-ui`.
 This same command can also be used to update freqUI, should there be a new release.
 
-Once the bot is started in trade / dry-run mode (with `freqtrade trade`) - the UI will be available under the configured port below (usually `http://127.0.0.1:8080`).
+Once the bot is started in trade / dry-run mode (with `tradescope trade`) - the UI will be available under the configured port below (usually `http://127.0.0.1:8080`).
 
 !!! Note "developers"
-    Developers should not use this method, but instead use the method described in the [freqUI repository](https://github.com/freqtrade/frequi) to get the source-code of freqUI.
+    Developers should not use this method, but instead use the method described in the [freqUI repository](https://github.com/tradescope/frequi) to get the source-code of freqUI.
 
 ## Configuration
 
@@ -27,7 +27,7 @@ Sample configuration:
         "enable_openapi": false,
         "jwt_secret_key": "somethingrandom",
         "CORS_origins": [],
-        "username": "Freqtrader",
+        "username": "Tradescoper",
         "password": "SuperSecret1!",
         "ws_token": "sercet_Ws_t0ken"
     },
@@ -75,7 +75,7 @@ If you run your bot using docker, you'll need to have the bot listen to incoming
         "enabled": true,
         "listen_ip_address": "0.0.0.0",
         "listen_port": 8080,
-        "username": "Freqtrader",
+        "username": "Tradescoper",
         "password": "SuperSecret1!",
         //...
     },
@@ -95,13 +95,13 @@ Make sure that the following 2 lines are available in your docker-compose file:
 
 ### Consuming the API
 
-You can consume the API by using `freqtrade-client` (also available as `scripts/rest_client.py`).
-This command can be installed independent of the bot by using `pip install freqtrade-client`.
+You can consume the API by using `tradescope-client` (also available as `scripts/rest_client.py`).
+This command can be installed independent of the bot by using `pip install tradescope-client`.
 
-This module is designed to be lightweight, and only depends on the `requests` and `python-rapidjson` modules, skipping all heavy dependencies freqtrade otherwise needs.
+This module is designed to be lightweight, and only depends on the `requests` and `python-rapidjson` modules, skipping all heavy dependencies tradescope otherwise needs.
 
 ``` bash
-freqtrade-client <command> [optional parameters]
+tradescope-client <command> [optional parameters]
 ```
 
 By default, the script assumes `127.0.0.1` (localhost) and port `8080` to be used, however you can specify a configuration file to override this behaviour.
@@ -114,7 +114,7 @@ By default, the script assumes `127.0.0.1` (localhost) and port `8080` to be use
         "enabled": true,
         "listen_ip_address": "0.0.0.0",
         "listen_port": 8080,
-        "username": "Freqtrader",
+        "username": "Tradescoper",
         "password": "SuperSecret1!",
         //...
     }
@@ -122,15 +122,15 @@ By default, the script assumes `127.0.0.1` (localhost) and port `8080` to be use
 ```
 
 ``` bash
-freqtrade-client --config rest_config.json <command> [optional parameters]
+tradescope-client --config rest_config.json <command> [optional parameters]
 ```
 
 ??? Note "Programmatic use"
-    The `freqtrade-client` package (installable independent of freqtrade) can be used in your own scripts to interact with the freqtrade API.
+    The `tradescope-client` package (installable independent of tradescope) can be used in your own scripts to interact with the tradescope API.
     to do so, please use the following:
 
     ``` python
-    from freqtrade_client import FtRestClient
+    from tradescope_client import FtRestClient
     
 
     client = FtRestClient(server_url, username, password)
@@ -197,7 +197,7 @@ freqtrade-client --config rest_config.json <command> [optional parameters]
 Possible commands can be listed from the rest-client script using the `help` command.
 
 ``` bash
-freqtrade-client help
+tradescope-client help
 ```
 
 ``` output
@@ -354,10 +354,10 @@ whitelist
 
 ### Message WebSocket
 
-The API Server includes a websocket endpoint for subscribing to RPC messages from the freqtrade Bot.
+The API Server includes a websocket endpoint for subscribing to RPC messages from the tradescope Bot.
 This can be used to consume real-time data from your bot, such as entry/exit fill messages, whitelist changes, populated indicators for pairs, and more.
 
-This is also used to setup [Producer/Consumer mode](producer-consumer.md) in Freqtrade.
+This is also used to setup [Producer/Consumer mode](producer-consumer.md) in Tradescope.
 
 Assuming your rest API is set to `127.0.0.1` on port `8080`, the endpoint is available at `http://localhost:8080/api/v1/message/ws`.
 
@@ -382,7 +382,7 @@ You would then add that token under `ws_token` in your `api_server` config. Like
     "enable_openapi": false,
     "jwt_secret_key": "somethingrandom",
     "CORS_origins": [],
-    "username": "Freqtrader",
+    "username": "Tradescoper",
     "password": "SuperSecret1!",
     "ws_token": "hZ-y58LXyX_HZ8O1cJzVyN6ePWrLpNQv4Q" // <-----
 },
@@ -404,7 +404,7 @@ Once connected to the WebSocket, the bot will broadcast RPC messages to anyone w
 }
 ```
 
-For a list of message types, please refer to the RPCMessageType enum in `freqtrade/enums/rpcmessagetype.py`
+For a list of message types, please refer to the RPCMessageType enum in `tradescope/enums/rpcmessagetype.py`
 
 Now anytime those types of RPC messages are sent in the bot, you will receive them through the WebSocket as long as the connection is active. They typically take the same form as the request:
 
@@ -423,7 +423,7 @@ Now anytime those types of RPC messages are sent in the bot, you will receive th
 
 When using [Nginx](https://nginx.org/en/docs/), the following configuration is required for WebSockets to work (Note this configuration is incomplete, it's missing some information and can not be used as is):
 
-Please make sure to replace `<freqtrade_listen_ip>` (and the subsequent port) with the IP and Port matching your configuration/setup.
+Please make sure to replace `<tradescope_listen_ip>` (and the subsequent port) with the IP and Port matching your configuration/setup.
 
 ```
 http {
@@ -439,7 +439,7 @@ http {
 
         location / {
             proxy_http_version 1.1;
-            proxy_pass http://<freqtrade_listen_ip>:8080;
+            proxy_pass http://<tradescope_listen_ip>:8080;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection $connection_upgrade;
             proxy_set_header Host $host;
@@ -455,7 +455,7 @@ To properly configure your reverse proxy (securely), please consult it's documen
 
 !!! Tip "SSL certificates"
     You can use tools like certbot to setup ssl certificates to access your bot's UI through encrypted connection by using any fo the above reverse proxies.
-    While this will protect your data in transit, we do not recommend to run the freqtrade API outside of your private network (VPN, SSH tunnel).
+    While this will protect your data in transit, we do not recommend to run the tradescope API outside of your private network (VPN, SSH tunnel).
 
 ### OpenAPI interface
 
@@ -465,13 +465,13 @@ This will enable the Swagger UI at the `/docs` endpoint. By default, that's runn
 ### Advanced API usage using JWT tokens
 
 !!! Note
-    The below should be done in an application (a Freqtrade REST API client, which fetches info via API), and is not intended to be used on a regular basis.
+    The below should be done in an application (a Tradescope REST API client, which fetches info via API), and is not intended to be used on a regular basis.
 
-Freqtrade's REST API also offers JWT (JSON Web Tokens).
+Tradescope's REST API also offers JWT (JSON Web Tokens).
 You can login using the following command, and subsequently use the resulting access_token.
 
 ``` bash
-> curl -X POST --user Freqtrader http://localhost:8080/api/v1/token/login
+> curl -X POST --user Tradescoper http://localhost:8080/api/v1/token/login
 {"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxMTk2ODEsIm5iZiI6MTU4OTExOTY4MSwianRpIjoiMmEwYmY0NWUtMjhmOS00YTUzLTlmNzItMmM5ZWVlYThkNzc2IiwiZXhwIjoxNTg5MTIwNTgxLCJpZGVudGl0eSI6eyJ1IjoiRnJlcXRyYWRlciJ9LCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.qt6MAXYIa-l556OM7arBvYJ0SDI9J8bIk3_glDujF5g","refresh_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxMTk2ODEsIm5iZiI6MTU4OTExOTY4MSwianRpIjoiZWQ1ZWI3YjAtYjMwMy00YzAyLTg2N2MtNWViMjIxNWQ2YTMxIiwiZXhwIjoxNTkxNzExNjgxLCJpZGVudGl0eSI6eyJ1IjoiRnJlcXRyYWRlciJ9LCJ0eXBlIjoicmVmcmVzaCJ9.d1AT_jYICyTAjD0fiQAr52rkRqtxCjUGEMwlNuuzgNQ"}
 
 > access_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxMTk2ODEsIm5iZiI6MTU4OTExOTY4MSwianRpIjoiMmEwYmY0NWUtMjhmOS00YTUzLTlmNzItMmM5ZWVlYThkNzc2IiwiZXhwIjoxNTg5MTIwNTgxLCJpZGVudGl0eSI6eyJ1IjoiRnJlcXRyYWRlciJ9LCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MifQ.qt6MAXYIa-l556OM7arBvYJ0SDI9J8bIk3_glDujF5g"
@@ -493,19 +493,19 @@ This whole section is only necessary in cross-origin cases (where you multiple b
 
 ??? info "Technical explanation"
     All web-based front-ends are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) - Cross-Origin Resource Sharing.
-    Since most of the requests to the Freqtrade API must be authenticated, a proper CORS policy is key to avoid security problems.
+    Since most of the requests to the Tradescope API must be authenticated, a proper CORS policy is key to avoid security problems.
     Also, the standard disallows `*` CORS policies for requests with credentials, so this setting must be set appropriately.
 
 Users can allow access from different origin URL's to the bot API via the `CORS_origins` configuration setting.
 It consists of a list of allowed URL's that are allowed to consume resources from the bot's API.
 
-Assuming your application is deployed as `https://frequi.freqtrade.io/home/` - this would mean that the following configuration becomes necessary:
+Assuming your application is deployed as `https://frequi.tradescope.io/home/` - this would mean that the following configuration becomes necessary:
 
 ```jsonc
 {
     //...
     "jwt_secret_key": "somethingrandom",
-    "CORS_origins": ["https://frequi.freqtrade.io"],
+    "CORS_origins": ["https://frequi.tradescope.io"],
     //...
 }
 ```

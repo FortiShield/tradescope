@@ -5,17 +5,17 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from freqtrade.configuration import TimeRange
-from freqtrade.data.dataprovider import DataProvider
-from freqtrade.enums import RunMode
-from freqtrade.freqai.data_kitchen import FreqaiDataKitchen
-from freqtrade.freqai.utils import download_all_data_for_training, get_required_data_timerange
-from freqtrade.optimize.backtesting import Backtesting
-from freqtrade.persistence import Trade
-from freqtrade.plugins.pairlistmanager import PairListManager
 from tests.conftest import EXMS, create_mock_trades, get_patched_exchange, log_has_re
 from tests.freqai.conftest import (get_patched_freqai_strategy, is_arm, is_mac, make_rl_config,
                                    mock_pytorch_mlp_model_training_parameters)
+from tradescope.configuration import TimeRange
+from tradescope.data.dataprovider import DataProvider
+from tradescope.enums import RunMode
+from tradescope.freqai.data_kitchen import FreqaiDataKitchen
+from tradescope.freqai.utils import download_all_data_for_training, get_required_data_timerange
+from tradescope.optimize.backtesting import Backtesting
+from tradescope.persistence import Trade
+from tradescope.plugins.pairlistmanager import PairListManager
 
 
 def can_run_model(model: str) -> None:
@@ -414,7 +414,7 @@ def test_backtesting_fit_live_predictions(mocker, freqai_conf, caplog):
 
 def test_plot_feature_importance(mocker, freqai_conf):
 
-    from freqtrade.freqai.utils import plot_feature_importance
+    from tradescope.freqai.utils import plot_feature_importance
 
     freqai_conf.update({"timerange": "20180110-20180130"})
     freqai_conf.get("freqai", {}).get("feature_parameters", {}).update(

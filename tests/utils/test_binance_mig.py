@@ -2,10 +2,10 @@ import shutil
 
 import pytest
 
-from freqtrade.persistence import Trade
-from freqtrade.util.migrations import (migrate_binance_futures_data, migrate_binance_futures_names,
-                                       migrate_data)
 from tests.conftest import create_mock_trades_usdt, log_has
+from tradescope.persistence import Trade
+from tradescope.util.migrations import (migrate_binance_futures_data, migrate_binance_futures_names,
+                                        migrate_data)
 
 
 def test_binance_mig_data_conversion(default_conf_usdt, tmp_path, testdatadir):
@@ -58,8 +58,8 @@ def test_binance_mig_db_conversion(default_conf_usdt, fee, caplog):
 
 def test_migration_wrapper(default_conf_usdt, mocker):
     default_conf_usdt['trading_mode'] = 'futures'
-    binmock = mocker.patch('freqtrade.util.migrations.migrate_binance_futures_data')
-    funding_mock = mocker.patch('freqtrade.util.migrations.migrate_funding_fee_timeframe')
+    binmock = mocker.patch('tradescope.util.migrations.migrate_binance_futures_data')
+    funding_mock = mocker.patch('tradescope.util.migrations.migrate_funding_fee_timeframe')
     migrate_data(default_conf_usdt)
 
     assert binmock.call_count == 1

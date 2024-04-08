@@ -1,6 +1,6 @@
-site_name: Freqtrade
-site_url: https://www.freqtrade.io/
-repo_url: https://github.com/freqtrade/freqtrade
+site_name: Tradescope
+site_url: https://www.tradescope.io/
+repo_url: https://github.com/khulnasoft/tradescope
 edit_uri: edit/develop/docs/
 use_directory_urls: True
 nav:
@@ -9,7 +9,7 @@ nav:
     - Installation:
         - Linux/MacOS/Raspberry: installation.md
         - Windows: windows_installation.md
-    - Freqtrade Basics: bot-basics.md
+    - Tradescope Basics: bot-basics.md
     - Configuration: configuration.md
     - Strategy Customization: strategy-customization.md
     - Strategy Callbacks: strategy-callbacks.md
@@ -51,7 +51,7 @@ nav:
     - FAQ: faq.md
     - SQL Cheat-sheet: sql_cheatsheet.md
     - Strategy migration: strategy_migration.md
-    - Updating Freqtrade: updating.md
+    - Updating Tradescope: updating.md
     - Deprecated Features: deprecated.md
     - Contributors Guide: developer.md
 theme:

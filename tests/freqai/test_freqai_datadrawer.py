@@ -6,12 +6,12 @@ from unittest.mock import patch
 import pandas as pd
 import pytest
 
-from freqtrade.configuration import TimeRange
-from freqtrade.data.dataprovider import DataProvider
-from freqtrade.exceptions import OperationalException
-from freqtrade.freqai.data_kitchen import FreqaiDataKitchen
 from tests.conftest import get_patched_exchange
 from tests.freqai.conftest import get_patched_freqai_strategy
+from tradescope.configuration import TimeRange
+from tradescope.data.dataprovider import DataProvider
+from tradescope.exceptions import OperationalException
+from tradescope.freqai.data_kitchen import FreqaiDataKitchen
 
 
 def test_update_historic_data(mocker, freqai_conf):

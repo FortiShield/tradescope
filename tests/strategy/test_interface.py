@@ -7,23 +7,23 @@ from unittest.mock import MagicMock
 import pytest
 from pandas import DataFrame
 
-from freqtrade.configuration import TimeRange
-from freqtrade.constants import CUSTOM_TAG_MAX_LENGTH
-from freqtrade.data.dataprovider import DataProvider
-from freqtrade.data.history import load_data
-from freqtrade.enums import ExitCheckTuple, ExitType, HyperoptState, SignalDirection
-from freqtrade.exceptions import OperationalException, StrategyError
-from freqtrade.optimize.hyperopt_tools import HyperoptStateContainer
-from freqtrade.optimize.space import SKDecimal
-from freqtrade.persistence import PairLocks, Trade
-from freqtrade.resolvers import StrategyResolver
-from freqtrade.strategy.hyper import detect_parameters
-from freqtrade.strategy.parameters import (BaseParameter, BooleanParameter, CategoricalParameter,
-                                           DecimalParameter, IntParameter, RealParameter)
-from freqtrade.strategy.strategy_wrapper import strategy_safe_wrapper
-from freqtrade.util import dt_now
 from tests.conftest import (CURRENT_TEST_STRATEGY, TRADE_SIDES, create_mock_trades, log_has,
                             log_has_re)
+from tradescope.configuration import TimeRange
+from tradescope.constants import CUSTOM_TAG_MAX_LENGTH
+from tradescope.data.dataprovider import DataProvider
+from tradescope.data.history import load_data
+from tradescope.enums import ExitCheckTuple, ExitType, HyperoptState, SignalDirection
+from tradescope.exceptions import OperationalException, StrategyError
+from tradescope.optimize.hyperopt_tools import HyperoptStateContainer
+from tradescope.optimize.space import SKDecimal
+from tradescope.persistence import PairLocks, Trade
+from tradescope.resolvers import StrategyResolver
+from tradescope.strategy.hyper import detect_parameters
+from tradescope.strategy.parameters import (BaseParameter, BooleanParameter, CategoricalParameter,
+                                            DecimalParameter, IntParameter, RealParameter)
+from tradescope.strategy.strategy_wrapper import strategy_safe_wrapper
+from tradescope.util import dt_now
 
 from .strats.strategy_test_v3 import StrategyTestV3
 
@@ -301,7 +301,7 @@ def test_freqai_not_initialized(default_conf) -> None:
 
 def test_advise_all_indicators_copy(mocker, default_conf, testdatadir) -> None:
     strategy = StrategyResolver.load_strategy(default_conf)
-    aimock = mocker.patch('freqtrade.strategy.interface.IStrategy.advise_indicators')
+    aimock = mocker.patch('tradescope.strategy.interface.IStrategy.advise_indicators')
     timerange = TimeRange.parse_timerange('1510694220-1510700340')
     data = load_data(testdatadir, '1m', ['UNITTEST/BTC'], timerange=timerange,
                      fill_up_missing=True)
@@ -653,7 +653,7 @@ def test_analyze_ticker_default(ohlcv_history, mocker, caplog) -> None:
     entry_mock = MagicMock(side_effect=lambda x, meta: x)
     exit_mock = MagicMock(side_effect=lambda x, meta: x)
     mocker.patch.multiple(
-        'freqtrade.strategy.interface.IStrategy',
+        'tradescope.strategy.interface.IStrategy',
         advise_indicators=ind_mock,
         advise_entry=entry_mock,
         advise_exit=exit_mock,
@@ -684,7 +684,7 @@ def test__analyze_ticker_internal_skip_analyze(ohlcv_history, mocker, caplog) ->
     entry_mock = MagicMock(side_effect=lambda x, meta: x)
     exit_mock = MagicMock(side_effect=lambda x, meta: x)
     mocker.patch.multiple(
-        'freqtrade.strategy.interface.IStrategy',
+        'tradescope.strategy.interface.IStrategy',
         advise_indicators=ind_mock,
         advise_entry=entry_mock,
         advise_exit=exit_mock,
@@ -986,7 +986,7 @@ def test_auto_hyperopt_interface_loadparams(default_conf, mocker, caplog):
             }
         }
     }
-    mocker.patch('freqtrade.strategy.hyper.HyperoptTools.load_params',
+    mocker.patch('tradescope.strategy.hyper.HyperoptTools.load_params',
                  return_value=expected_result)
     PairLocks.timeframe = default_conf['timeframe']
     strategy = StrategyResolver.load_strategy(default_conf)
@@ -1006,12 +1006,12 @@ def test_auto_hyperopt_interface_loadparams(default_conf, mocker, caplog):
         }
     }
 
-    mocker.patch('freqtrade.strategy.hyper.HyperoptTools.load_params',
+    mocker.patch('tradescope.strategy.hyper.HyperoptTools.load_params',
                  return_value=expected_result)
     with pytest.raises(OperationalException, match="Invalid parameter file provided."):
         StrategyResolver.load_strategy(default_conf)
 
-    mocker.patch('freqtrade.strategy.hyper.HyperoptTools.load_params',
+    mocker.patch('tradescope.strategy.hyper.HyperoptTools.load_params',
                  MagicMock(side_effect=ValueError()))
 
     StrategyResolver.load_strategy(default_conf)

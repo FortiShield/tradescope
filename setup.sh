@@ -100,12 +100,12 @@ function updateenv() {
     fi
     ${PYTHON} -m pip install -e .
     if [ $? -ne 0 ]; then
-        echo "Failed installing Freqtrade"
+        echo "Failed installing Tradescope"
         exit 1
     fi
 
     echo "Installing freqUI"
-    freqtrade install-ui
+    RAe install-ui
 
     echo "pip install completed"
     echo
@@ -259,7 +259,7 @@ function reset() {
 }
 
 function config() {
-    echo_block "Please use 'freqtrade new-config -c user_data/config.json' to generate a new configuration file."
+    echo_block "Please use 'tradescope new-config -c user_data/config.json' to generate a new configuration file."
 }
 
 function install() {
@@ -285,9 +285,9 @@ function install() {
     reset
     config
     echo_block "Run the bot !"
-    echo "You can now use the bot by executing 'source .venv/bin/activate; freqtrade <subcommand>'."
-    echo "You can see the list of available bot sub-commands by executing 'source .venv/bin/activate; freqtrade --help'."
-    echo "You verify that freqtrade is installed successfully by running 'source .venv/bin/activate; freqtrade --version'."
+    echo "You can now use the bot by executing 'source .venv/bin/activate; tradescope <subcommand>'."
+    echo "You can see the list of available bot sub-commands by executing 'source .venv/bin/activate; tradescope --help'."
+    echo "You verify that tradescope is installed successfully by running 'source .venv/bin/activate; tradescope --version'."
 }
 
 function plot() {
@@ -297,7 +297,7 @@ function plot() {
 
 function help() {
     echo "usage:"
-    echo "	-i,--install    Install freqtrade from scratch"
+    echo "	-i,--install    Install tradescope from scratch"
     echo "	-u,--update     Command git pull to update."
     echo "	-r,--reset      Hard reset your develop/stable branch."
     echo "	-c,--config     Easy config generator (Will override your existing file)."

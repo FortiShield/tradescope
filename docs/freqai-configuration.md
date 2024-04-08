@@ -1,6 +1,6 @@
 # Configuration
 
-FreqAI is configured through the typical [Freqtrade config file](configuration.md) and the standard [Freqtrade strategy](strategy-customization.md). Examples of FreqAI config and strategy files can be found in `config_examples/config_freqai.example.json` and `freqtrade/templates/FreqaiExampleStrategy.py`, respectively.
+FreqAI is configured through the typical [Tradescope config file](configuration.md) and the standard [Tradescope strategy](strategy-customization.md). Examples of FreqAI config and strategy files can be found in `config_examples/config_freqai.example.json` and `tradescope/templates/FreqaiExampleStrategy.py`, respectively.
 
 ## Setting up the configuration file
 
@@ -37,7 +37,7 @@ A full example config is available in `config_examples/config_freqai.example.jso
 
 ## Building a FreqAI strategy
 
-The FreqAI strategy requires including the following lines of code in the standard [Freqtrade strategy](strategy-customization.md):
+The FreqAI strategy requires including the following lines of code in the standard [Tradescope strategy](strategy-customization.md):
 
 ```python
     # user should define the maximum startup candle count (the largest number of candles
@@ -153,7 +153,7 @@ Notice how the `feature_engineering_*()` is where [features](freqai-feature-engi
 !!! Note
     Features **must** be defined in `feature_engineering_*()`. Defining FreqAI features in `populate_indicators()`
     will cause the algorithm to fail in live/dry mode. In order to add generalized features that are not associated with a specific pair or timeframe, you should use `feature_engineering_standard()`
-    (as exemplified in `freqtrade/templates/FreqaiExampleStrategy.py`).
+    (as exemplified in `tradescope/templates/FreqaiExampleStrategy.py`).
 
 ## Important dataframe key patterns
 
@@ -170,13 +170,13 @@ Below are the values you can expect to include/use inside a typical strategy dat
 
 ## Setting the `startup_candle_count`
 
-The `startup_candle_count` in the FreqAI strategy needs to be set up in the same way as in the standard Freqtrade strategy (see details [here](strategy-customization.md#strategy-startup-period)). This value is used by Freqtrade to ensure that a sufficient amount of data is provided when calling the `dataprovider`, to avoid any NaNs at the beginning of the first training. You can easily set this value by identifying the longest period (in candle units) which is passed to the indicator creation functions (e.g., TA-Lib functions). In the presented example, `startup_candle_count` is 20 since this is the maximum value in `indicators_periods_candles`.
+The `startup_candle_count` in the FreqAI strategy needs to be set up in the same way as in the standard Tradescope strategy (see details [here](strategy-customization.md#strategy-startup-period)). This value is used by Tradescope to ensure that a sufficient amount of data is provided when calling the `dataprovider`, to avoid any NaNs at the beginning of the first training. You can easily set this value by identifying the longest period (in candle units) which is passed to the indicator creation functions (e.g., TA-Lib functions). In the presented example, `startup_candle_count` is 20 since this is the maximum value in `indicators_periods_candles`.
 
 !!! Note
     There are instances where the TA-Lib functions actually require more data than just the passed `period` or else the feature dataset gets populated with NaNs. Anecdotally, multiplying the `startup_candle_count` by 2 always leads to a fully NaN free training dataset. Hence, it is typically safest to multiply the expected `startup_candle_count` by 2. Look out for this log message to confirm that the data is clean:
 
     ```
-    2022-08-31 15:14:04 - freqtrade.freqai.data_kitchen - INFO - dropped 0 training points due to NaNs in populated dataset 4319.
+    2022-08-31 15:14:04 - tradescope.freqai.data_kitchen - INFO - dropped 0 training points due to NaNs in populated dataset 4319.
     ```
 
 ## Creating a dynamic target threshold
@@ -212,7 +212,7 @@ All of the aforementioned model libraries implement gradient boosted decision tr
 
 There are also numerous online articles describing and comparing the algorithms. Some relatively lightweight examples would be [CatBoost vs. LightGBM vs. XGBoost — Which is the best algorithm?](https://towardsdatascience.com/catboost-vs-lightgbm-vs-xgboost-c80f40662924#:~:text=In%20CatBoost%2C%20symmetric%20trees%2C%20or,the%20same%20depth%20can%20differ.) and [XGBoost, LightGBM or CatBoost — which boosting algorithm should I use?](https://medium.com/riskified-technology/xgboost-lightgbm-or-catboost-which-boosting-algorithm-should-i-use-e7fda7bb36bc). Keep in mind that the performance of each model is highly dependent on the application and so any reported metrics might not be true for your particular use of the model.
 
-Apart from the models already available in FreqAI, it is also possible to customize and create your own prediction models using the `IFreqaiModel` class. You are encouraged to inherit `fit()`, `train()`, and `predict()` to customize various aspects of the training procedures. You can place custom FreqAI models in `user_data/freqaimodels` - and freqtrade will pick them up from there based on the provided `--freqaimodel` name - which has to correspond to the class name of your custom model.
+Apart from the models already available in FreqAI, it is also possible to customize and create your own prediction models using the `IFreqaiModel` class. You are encouraged to inherit `fit()`, `train()`, and `predict()` to customize various aspects of the training procedures. You can place custom FreqAI models in `user_data/freqaimodels` - and tradescope will pick them up from there based on the provided `--freqaimodel` name - which has to correspond to the class name of your custom model.
 Make sure to use unique names to avoid overriding built-in models.
 
 ### Setting model targets
@@ -249,7 +249,7 @@ df['&s-up_or_down'] = np.where( df["close"].shift(-100) == df["close"], 'same', 
 The easiest way to quickly run a pytorch model is with the following command (for regression task):
 
 ```bash
-freqtrade trade --config config_examples/config_freqai.example.json --strategy FreqaiExampleStrategy --freqaimodel PyTorchMLPRegressor --strategy-path freqtrade/templates 
+tradescope trade --config config_examples/config_freqai.example.json --strategy FreqaiExampleStrategy --freqaimodel PyTorchMLPRegressor --strategy-path tradescope/templates 
 ```
 
 !!! Note "Installation/docker"
@@ -400,7 +400,7 @@ Here we create a `PyTorchMLPRegressor` class that implements the `fit` method. T
     
         return dataframe
     ```
-    To see a full example, you can refer to the [classifier test strategy class](https://github.com/freqtrade/freqtrade/blob/develop/tests/strategy/strats/freqai_test_classifier.py).
+    To see a full example, you can refer to the [classifier test strategy class](https://github.com/khulnasoft/tradescope/blob/develop/tests/strategy/strats/freqai_test_classifier.py).
 
 
 #### Improving performance with `torch.compile()`

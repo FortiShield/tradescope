@@ -2,9 +2,9 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from freqtrade.persistence import PairLocks
-from freqtrade.persistence.models import PairLock
-from freqtrade.util import dt_now
+from tradescope.persistence import PairLocks
+from tradescope.persistence.models import PairLock
+from tradescope.util import dt_now
 
 
 @pytest.mark.parametrize('use_db', (False, True))

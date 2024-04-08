@@ -3,7 +3,7 @@
 To support new markets and trade-types (namely short trades / trades with leverage), some things had to change in the interface.
 If you intend on using markets other than spot markets, please migrate your strategy to the new format.
 
-We have put a great effort into keeping compatibility with existing strategies, so if you just want to continue using freqtrade in __spot markets__, there should be no changes necessary for now.
+We have put a great effort into keeping compatibility with existing strategies, so if you just want to continue using tradescope in __spot markets__, there should be no changes necessary for now.
 
 You can use the quick summary as checklist. Please refer to the detailed sections below for full migration details.
 
@@ -594,9 +594,9 @@ Features will now expand automatically. As such, the expansion loops, as well as
         More details on how these config defined parameters accelerate feature engineering
         in the documentation at:
 
-        https://www.freqtrade.io/en/latest/freqai-parameter-table/#feature-parameters
+        https://www.tradescope.io/en/latest/freqai-parameter-table/#feature-parameters
 
-        https://www.freqtrade.io/en/latest/freqai-feature-engineering/#defining-the-features
+        https://www.tradescope.io/en/latest/freqai-feature-engineering/#defining-the-features
 
         :param df: strategy dataframe which will receive the features
         :param period: period of the indicator - usage example:
@@ -657,9 +657,9 @@ Basic features. Make sure to remove the `{pair}` part from your features.
         More details on how these config defined parameters accelerate feature engineering
         in the documentation at:
 
-        https://www.freqtrade.io/en/latest/freqai-parameter-table/#feature-parameters
+        https://www.tradescope.io/en/latest/freqai-parameter-table/#feature-parameters
 
-        https://www.freqtrade.io/en/latest/freqai-feature-engineering/#defining-the-features
+        https://www.tradescope.io/en/latest/freqai-feature-engineering/#defining-the-features
 
         :param df: strategy dataframe which will receive the features
         dataframe["%-pct-change"] = dataframe["close"].pct_change()
@@ -690,7 +690,7 @@ Basic features. Make sure to remove the `{pair}` part from your features.
 
         More details about feature engineering available:
 
-        https://www.freqtrade.io/en/latest/freqai-feature-engineering
+        https://www.tradescope.io/en/latest/freqai-feature-engineering
 
         :param df: strategy dataframe which will receive the features
         usage example: dataframe["%-day_of_week"] = (dataframe["date"].dt.dayofweek + 1) / 7
@@ -713,7 +713,7 @@ Targets now get their own, dedicated method.
 
         More details about feature engineering available:
 
-        https://www.freqtrade.io/en/latest/freqai-feature-engineering
+        https://www.tradescope.io/en/latest/freqai-feature-engineering
 
         :param df: strategy dataframe which will receive the targets
         usage example: dataframe["&-target"] = dataframe["close"].shift(-1) / dataframe["close"]
@@ -733,14 +733,14 @@ Targets now get their own, dedicated method.
 
 ### FreqAI - New data Pipeline
 
-If you have created your own custom `IFreqaiModel` with a custom `train()`/`predict()` function, *and* you still rely on `data_cleaning_train/predict()`, then you will need to migrate to the new pipeline. If your model does *not* rely on `data_cleaning_train/predict()`, then you do not need to worry about this migration. That means that this migration guide is relevant for a very small percentage of power-users. If you stumbled upon this guide by mistake, feel free to inquire in depth about your problem in the Freqtrade discord server.
+If you have created your own custom `IFreqaiModel` with a custom `train()`/`predict()` function, *and* you still rely on `data_cleaning_train/predict()`, then you will need to migrate to the new pipeline. If your model does *not* rely on `data_cleaning_train/predict()`, then you do not need to worry about this migration. That means that this migration guide is relevant for a very small percentage of power-users. If you stumbled upon this guide by mistake, feel free to inquire in depth about your problem in the Tradescope discord server.
 
 The conversion involves first removing `data_cleaning_train/predict()` and replacing them with a `define_data_pipeline()` and `define_label_pipeline()` function to your `IFreqaiModel` class:
 
 ```python  linenums="1" hl_lines="11-14 47-49 55-57"
 class MyCoolFreqaiModel(BaseRegressionModel):
     """
-    Some cool custom IFreqaiModel you made before Freqtrade version 2023.6
+    Some cool custom IFreqaiModel you made before Tradescope version 2023.6
     """
     def train(
         self, unfiltered_df: DataFrame, pair: str, dk: FreqaiDataKitchen, **kwargs

@@ -7,9 +7,9 @@ from pathlib import Path
 
 import pytest
 
-from freqtrade.commands.strategy_utils_commands import start_strategy_update
-from freqtrade.strategy.strategyupdater import StrategyUpdater
 from tests.conftest import get_args
+from tradescope.commands.strategy_utils_commands import start_strategy_update
+from tradescope.strategy.strategyupdater import StrategyUpdater
 
 
 if sys.version_info < (3, 9):
@@ -191,7 +191,7 @@ def test_strategy_updater_comments(default_conf, caplog) -> None:
 # This is the 1st comment
 import talib.abstract as ta
 # This is the 2nd comment
-import freqtrade.vendor.qtpylib.indicators as qtpylib
+import tradescope.vendor.qtpylib.indicators as qtpylib
 
 
 class someStrategy(IStrategy):

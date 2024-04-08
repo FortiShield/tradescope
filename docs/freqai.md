@@ -68,7 +68,7 @@ An overview of the algorithm, explaining the data processing pipeline and model 
 The normal Tradescope install process will ask if you wish to install FreqAI dependencies. You should reply "yes" to this question if you wish to use FreqAI. If you did not reply yes, you can manually install these dependencies after the install with:
 
 ``` bash
-pip install -r requirements-freqai.txt
+pip install -r requirements-tradeai.txt
 ```
 
 !!! Note

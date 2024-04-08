@@ -1,16 +1,16 @@
-# REST API & FreqUI
+# REST API & TradeUI
 
-## FreqUI
+## TradeUI
 
-Tradescope provides a builtin webserver, which can serve [FreqUI](https://github.com/tradescope/frequi), the tradescope UI.
+Tradescope provides a builtin webserver, which can serve [TradeUI](https://github.com/khulnasoft-lab/tradeui), the tradescope UI.
 
 By default, the UI is not included in the installation (except for docker images), and must be installed explicitly with `tradescope install-ui`.
-This same command can also be used to update freqUI, should there be a new release.
+This same command can also be used to update tradeUI, should there be a new release.
 
 Once the bot is started in trade / dry-run mode (with `tradescope trade`) - the UI will be available under the configured port below (usually `http://127.0.0.1:8080`).
 
 !!! Note "developers"
-    Developers should not use this method, but instead use the method described in the [freqUI repository](https://github.com/tradescope/frequi) to get the source-code of freqUI.
+    Developers should not use this method, but instead use the method described in the [tradeUI repository](https://github.com/khulnasoft-lab/tradeui) to get the source-code of tradeUI.
 
 ## Configuration
 
@@ -38,7 +38,7 @@ Sample configuration:
 
 ??? Note "API/UI Access on a remote servers"
     If you're running on a VPS, you should consider using either a ssh tunnel, or setup a VPN (openVPN, wireguard) to connect to your bot.
-    This will ensure that freqUI is not directly exposed to the internet, which is not recommended for security reasons (freqUI does not support https out of the box).
+    This will ensure that tradeUI is not directly exposed to the internet, which is not recommended for security reasons (tradeUI does not support https out of the box).
     Setup of these tools is not part of this tutorial, however many good tutorials can be found on the internet.
 
 You can then access the API by going to `http://127.0.0.1:8080/api/v1/ping` in a browser to check if the API is running correctly.
@@ -489,7 +489,7 @@ Since the access token has a short timeout (15 min) - the `token/refresh` reques
 
 ### CORS
 
-This whole section is only necessary in cross-origin cases (where you multiple bot API's running on `localhost:8081`, `localhost:8082`, ...), and want to combine them into one FreqUI instance.
+This whole section is only necessary in cross-origin cases (where you multiple bot API's running on `localhost:8081`, `localhost:8082`, ...), and want to combine them into one TradeUI instance.
 
 ??? info "Technical explanation"
     All web-based front-ends are subject to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) - Cross-Origin Resource Sharing.
@@ -499,19 +499,19 @@ This whole section is only necessary in cross-origin cases (where you multiple b
 Users can allow access from different origin URL's to the bot API via the `CORS_origins` configuration setting.
 It consists of a list of allowed URL's that are allowed to consume resources from the bot's API.
 
-Assuming your application is deployed as `https://frequi.tradescope.io/home/` - this would mean that the following configuration becomes necessary:
+Assuming your application is deployed as `https://tradeui.tradescope.io/home/` - this would mean that the following configuration becomes necessary:
 
 ```jsonc
 {
     //...
     "jwt_secret_key": "somethingrandom",
-    "CORS_origins": ["https://frequi.tradescope.io"],
+    "CORS_origins": ["https://tradeui.tradescope.io"],
     //...
 }
 ```
 
-In the following (pretty common) case, FreqUI is accessible on `http://localhost:8080/trade` (this is what you see in your navbar when navigating to freqUI).
-![freqUI url](assets/frequi_url.png)
+In the following (pretty common) case, TradeUI is accessible on `http://localhost:8080/trade` (this is what you see in your navbar when navigating to tradeUI).
+![tradeUI url](assets/tradeui_url.png)
 
 The correct configuration for this case is `http://localhost:8080` - the main part of the URL including the port.
 

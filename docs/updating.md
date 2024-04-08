@@ -34,7 +34,7 @@ git pull
 pip install -U -r requirements.txt
 pip install -e .
 
-# Ensure freqUI is at the latest version
+# Ensure tradeUI is at the latest version
 tradescope install-ui 
 ```
 

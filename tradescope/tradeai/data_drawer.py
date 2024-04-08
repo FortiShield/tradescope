@@ -272,7 +272,7 @@ class TradeaiDataDrawer:
         retrainings (so stored predictions are true predictions, not just inferencing on trained
         data).
 
-        We also aim to keep the date from historical predictions so that the FreqUI displays
+        We also aim to keep the date from historical predictions so that the TradeUI displays
         zeros during any downtime (between TradeAI reloads).
         """
 
@@ -303,7 +303,7 @@ class TradeaiDataDrawer:
         df_concat = pd.concat([hist_preds, new_pred_reindexed], ignore_index=True)
 
         # any missing values will get zeroed out so users can see the exact
-        # downtime in FreqUI
+        # downtime in TradeUI
         df_concat = df_concat.fillna(0)
         self.historic_predictions[pair] = df_concat
         self.model_return_values[pair] = df_concat.tail(len(dataframe.index)).reset_index(drop=True)
@@ -315,7 +315,7 @@ class TradeaiDataDrawer:
         Append model predictions to historic predictions dataframe, then set the
         strategy return dataframe to the tail of the historic predictions. The length of
         the tail is equivalent to the length of the dataframe that entered TradeAI from
-        the strategy originally. Doing this allows FreqUI to always display the correct
+        the strategy originally. Doing this allows TradeUI to always display the correct
         historic predictions.
         """
 

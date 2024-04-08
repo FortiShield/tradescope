@@ -453,7 +453,7 @@ class ITradeaiModel(ABC):
 
         if pair not in self.dd.model_return_values:
             # first predictions are made on entire historical candle set coming from strategy. This
-            # allows FreqUI to show full return values.
+            # allows TradeUI to show full return values.
             pred_df, do_preds = self.predict(dataframe, dk)
             if pair not in self.dd.historic_predictions:
                 self.set_initial_historic_predictions(pred_df, dk, pair, dataframe)

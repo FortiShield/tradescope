@@ -114,7 +114,7 @@ positional arguments:
     list-timeframes     Print available timeframes for the exchange.
     show-trades         Show trades.
     test-pairlist       Test your pairlist configuration.
-    install-ui          Install FreqUI
+    install-ui          Install TradeUI
     plot-dataframe      Plot candles with indicators.
     plot-profit         Generate plot showing profits.
     webserver           Webserver module.

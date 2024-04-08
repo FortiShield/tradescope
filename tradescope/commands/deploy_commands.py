@@ -134,7 +134,7 @@ def download_and_install_ui(dest_folder: Path, dl_url: str, version: str):
 
 
 def get_ui_download_url(version: Optional[str] = None) -> Tuple[str, str]:
-    base_url = 'https://api.github.com/repos/tradescope/frequi/'
+    base_url = 'https://api.github.com/repos/khulnasoft-lab/tradeui/'
     # Get base UI Repo path
 
     resp = requests.get(f"{base_url}releases")
@@ -173,7 +173,7 @@ def start_install_ui(args: Dict[str, Any]) -> None:
 
     curr_version = read_ui_version(dest_folder)
     if curr_version == latest_version and not args.get('erase_ui_only'):
-        logger.info(f"UI already up-to-date, FreqUI Version {curr_version}.")
+        logger.info(f"UI already up-to-date, TradeUI Version {curr_version}.")
         return
 
     clean_ui_subdir(dest_folder)

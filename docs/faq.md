@@ -279,4 +279,4 @@ Failing to follow these guidelines will not be responsibility of tradescope.
 
 Tradescope does not have a Crypto token offering.
 
-Token offerings you find on the internet referring Tradescope, TradeAI or freqUI must be considered to be a scam, trying to exploit tradescope's popularity for their own, nefarious gains.
+Token offerings you find on the internet referring Tradescope, TradeAI or tradeUI must be considered to be a scam, trying to exploit tradescope's popularity for their own, nefarious gains.

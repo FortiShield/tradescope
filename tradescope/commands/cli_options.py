@@ -482,7 +482,7 @@ AVAILABLE_CLI_OPTIONS = {
     ),
     "ui_version": Arg(
         '--ui-version',
-        help=('Specify a specific version of FreqUI to install. '
+        help=('Specify a specific version of TradeUI to install. '
               'Not specifying this installs the latest version.'),
         type=str,
     ),

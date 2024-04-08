@@ -512,9 +512,9 @@ optional arguments:
     There may still be bugs - so if you happen to stumble across these, please report them as github issues, thanks.
 
 Run tradescope in webserver mode.
-Tradescope will start the webserver and allow FreqUI to start and control backtesting processes.
+Tradescope will start the webserver and allow TradeUI to start and control backtesting processes.
 This has the advantage that data will not be reloaded between backtesting runs (as long as timeframe and timerange remain identical).
-FreqUI will also show the backtesting results.
+TradeUI will also show the backtesting results.
 
 ```
 usage: tradescope webserver [-h] [-v] [--logfile FILE] [-V] [-c PATH] [-d PATH]

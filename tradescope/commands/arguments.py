@@ -452,7 +452,7 @@ class Arguments:
         # Add install-ui subcommand
         install_ui_cmd = subparsers.add_parser(
             'install-ui',
-            help='Install FreqUI',
+            help='Install TradeUI',
         )
         install_ui_cmd.set_defaults(func=start_install_ui)
         self._build_args(optionlist=ARGS_INSTALL_UI, parser=install_ui_cmd)

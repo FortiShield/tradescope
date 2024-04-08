@@ -174,7 +174,7 @@ def ask_user_config() -> Dict[str, Any]:
         {
             "type": "confirm",
             "name": "api_server",
-            "message": "Do you want to enable the Rest API (includes FreqUI)?",
+            "message": "Do you want to enable the Rest API (includes TradeUI)?",
             "default": False,
         },
         {

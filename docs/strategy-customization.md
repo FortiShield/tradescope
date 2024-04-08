@@ -7,7 +7,7 @@ Please familiarize yourself with [Tradescope basics](bot-basics.md) first, which
 ## Develop your own strategy
 
 The bot includes a default strategy file.
-Also, several other strategies are available in the [strategy repository](https://github.com/khulnasoft/tradescope-strategies).
+Also, several other strategies are available in the [strategy repository](https://github.com/khulnasoft-lab/tradescope-strategies).
 
 You will however most likely have your own idea for a strategy.
 This document intends to help you convert your strategy idea into your own strategy.
@@ -1029,7 +1029,7 @@ The following rules apply, and entry signals will be ignored if more than one of
 
 ## Further strategy ideas
 
-To get additional Ideas for strategies, head over to the [strategy repository](https://github.com/khulnasoft/tradescope-strategies). Feel free to use them as they are - but results will depend on the current market situation, pairs used etc. - therefore please backtest the strategy for your exchange/desired pairs first, evaluate carefully, use at your own risk.
+To get additional Ideas for strategies, head over to the [strategy repository](https://github.com/khulnasoft-lab/tradescope-strategies). Feel free to use them as they are - but results will depend on the current market situation, pairs used etc. - therefore please backtest the strategy for your exchange/desired pairs first, evaluate carefully, use at your own risk.
 Feel free to use any of them as inspiration for your own strategies.
 We're happy to accept Pull Requests containing new Strategies to that repo.
 

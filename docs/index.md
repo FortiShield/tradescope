@@ -25,7 +25,7 @@ Tradescope is a free and open source crypto trading bot written in Python. It is
 
 ## Features
 
-- Develop your Strategy: Write your strategy in python, using [pandas](https://pandas.pydata.org/). Example strategies to inspire you are available in the [strategy repository](https://github.com/khulnasoft/tradescope-strategies).
+- Develop your Strategy: Write your strategy in python, using [pandas](https://pandas.pydata.org/). Example strategies to inspire you are available in the [strategy repository](https://github.com/khulnasoft-lab/tradescope-strategies).
 - Download market data: Download historical data of the exchange and the markets your may want to trade with.
 - Backtest: Test your strategy on downloaded historical data.
 - Optimize: Find the best parameters for your strategy using hyperoptimization which employs machining learning methods. You can optimize buy, sell, take profit (ROI), stop-loss and trailing stop-loss parameters for your strategy.

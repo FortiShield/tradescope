@@ -104,8 +104,8 @@ function updateenv() {
         exit 1
     fi
 
-    echo "Installing freqUI"
-    RAe install-ui
+    echo "Installing tradeUI"
+    tcope install-ui
 
     echo "pip install completed"
     echo

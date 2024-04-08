@@ -1576,7 +1576,7 @@ def test_api_pair_candles(botclient, ohlcv_history):
 def test_api_pair_history(botclient, mocker):
     _ftbot, client = botclient
     timeframe = '5m'
-    lfm = mocker.patch('tradescope.strategy.interface.IStrategy.load_freqAI_model')
+    lfm = mocker.patch('tradescope.strategy.interface.IStrategy.load_tradeAI_model')
     # No pair
     rc = client_get(client,
                     f"{BASE_URI}/pair_history?timeframe={timeframe}"
@@ -1668,7 +1668,7 @@ def test_api_plot_config(botclient, mocker):
     assert isinstance(rc.json()['main_plot'], dict)
     assert isinstance(rc.json()['subplots'], dict)
 
-    rc = client_get(client, f"{BASE_URI}/plot_config?strategy=freqai_test_classifier")
+    rc = client_get(client, f"{BASE_URI}/plot_config?strategy=tradeai_test_classifier")
     assert_response(rc)
     res = rc.json()
     assert 'target_roi' in res['subplots']
@@ -1704,11 +1704,11 @@ def test_api_strategies(botclient, tmp_path):
         'StrategyTestV3',
         'StrategyTestV3CustomEntryPrice',
         'StrategyTestV3Futures',
-        'freqai_rl_test_strat',
-        'freqai_test_classifier',
-        'freqai_test_multimodel_classifier_strat',
-        'freqai_test_multimodel_strat',
-        'freqai_test_strat',
+        'tradeai_rl_test_strat',
+        'tradeai_test_classifier',
+        'tradeai_test_multimodel_classifier_strat',
+        'tradeai_test_multimodel_strat',
+        'tradeai_test_strat',
         'strategy_test_v3_recursive_issue'
     ]}
 
@@ -1777,7 +1777,7 @@ def test_api_tradeaimodels(botclient, tmp_path, mocker):
     ftbot, client = botclient
     ftbot.config['user_data_dir'] = tmp_path
     mocker.patch(
-        "tradescope.resolvers.freqaimodel_resolver.FreqaiModelResolver.search_all_objects",
+        "tradescope.resolvers.tradeaimodel_resolver.TradeaiModelResolver.search_all_objects",
         return_value=[
             {'name': 'LightGBMClassifier'},
             {'name': 'LightGBMClassifierMultiTarget'},

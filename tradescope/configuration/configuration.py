@@ -99,7 +99,7 @@ class Configuration:
 
         self._process_analyze_options(config)
 
-        self._process_freqai_options(config)
+        self._process_tradeai_options(config)
 
         # Import check_exchange here to avoid import cycle problems
         from tradescope.exchange.check_exchange import check_exchange
@@ -268,8 +268,8 @@ class Configuration:
             ('backtest_breakdown', 'Parameter --breakdown detected ...'),
             ('backtest_cache', 'Parameter --cache={} detected ...'),
             ('disableparamexport', 'Parameter --disableparamexport detected: {} ...'),
-            ('freqai_backtest_live_models',
-             'Parameter --freqai-backtest-live-models detected ...'),
+            ('tradeai_backtest_live_models',
+             'Parameter --tradeai-backtest-live-models detected ...'),
         ]
         self._args_to_config_loop(config, configurations)
 
@@ -398,13 +398,13 @@ class Configuration:
 
         config.update({'runmode': self.runmode})
 
-    def _process_freqai_options(self, config: Config) -> None:
+    def _process_tradeai_options(self, config: Config) -> None:
 
-        self._args_to_config(config, argname='freqaimodel',
-                             logstring='Using freqaimodel class name: {}')
+        self._args_to_config(config, argname='tradeaimodel',
+                             logstring='Using tradeaimodel class name: {}')
 
-        self._args_to_config(config, argname='freqaimodel_path',
-                             logstring='Using freqaimodel path: {}')
+        self._args_to_config(config, argname='tradeaimodel_path',
+                             logstring='Using tradeaimodel path: {}')
 
         return
 

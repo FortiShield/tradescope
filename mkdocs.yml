@@ -23,14 +23,14 @@ nav:
     - Data Downloading: data-download.md
     - Backtesting: backtesting.md
     - Hyperopt: hyperopt.md
-    - FreqAI:
-        - Introduction: freqai.md
-        - Configuration: freqai-configuration.md
-        - Parameter table: freqai-parameter-table.md
-        - Feature engineering: freqai-feature-engineering.md
-        - Running FreqAI: freqai-running.md
-        - Reinforcement Learning: freqai-reinforcement-learning.md
-        - Developer guide: freqai-developers.md
+    - TradeAI:
+        - Introduction: tradeai.md
+        - Configuration: tradeai-configuration.md
+        - Parameter table: tradeai-parameter-table.md
+        - Feature engineering: tradeai-feature-engineering.md
+        - Running TradeAI: tradeai-running.md
+        - Reinforcement Learning: tradeai-reinforcement-learning.md
+        - Developer guide: tradeai-developers.md
     - Short / Leverage: leverage.md
     - Utility Sub-commands: utils.md
     - Plotting: plotting.md

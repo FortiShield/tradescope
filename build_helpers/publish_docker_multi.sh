@@ -7,8 +7,8 @@ CACHE_IMAGE=khulnasoft/tradescope_cache
 # Replace / with _ to create a valid tag
 TAG=$(echo "${BRANCH_NAME}" | sed -e "s/\//_/g")
 TAG_PLOT=${TAG}_plot
-TAG_FREQAI=${TAG}_freqai
-TAG_FREQAI_RL=${TAG_FREQAI}rl
+TAG_TRADEAI=${TAG}_tradeai
+TAG_TRADEAI_RL=${TAG_TRADEAI}rl
 TAG_PI="${TAG}_pi"
 
 PI_PLATFORM="linux/arm/v7"
@@ -59,12 +59,12 @@ fi
 docker tag tradescope:$TAG ${CACHE_IMAGE}:$TAG
 
 docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG} -t tradescope:${TAG_PLOT} -f docker/Dockerfile.plot .
-docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG} -t tradescope:${TAG_FREQAI} -f docker/Dockerfile.freqai .
-docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG_FREQAI} -t tradescope:${TAG_FREQAI_RL} -f docker/Dockerfile.freqai_rl .
+docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG} -t tradescope:${TAG_TRADEAI} -f docker/Dockerfile.tradeai .
+docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG_TRADEAI} -t tradescope:${TAG_TRADEAI_RL} -f docker/Dockerfile.tradeai_rl .
 
 docker tag tradescope:$TAG_PLOT ${CACHE_IMAGE}:$TAG_PLOT
-docker tag tradescope:$TAG_FREQAI ${CACHE_IMAGE}:$TAG_FREQAI
-docker tag tradescope:$TAG_FREQAI_RL ${CACHE_IMAGE}:$TAG_FREQAI_RL
+docker tag tradescope:$TAG_TRADEAI ${CACHE_IMAGE}:$TAG_TRADEAI
+docker tag tradescope:$TAG_TRADEAI_RL ${CACHE_IMAGE}:$TAG_TRADEAI_RL
 
 # Run backtest
 docker run --rm -v $(pwd)/tests/testdata/config.tests.json:/tradescope/config.json:ro -v $(pwd)/tests:/tests tradescope:${TAG} backtesting --datadir /tests/testdata --strategy-path /tests/strategy/strats/ --strategy StrategyTestV3
@@ -78,8 +78,8 @@ docker images
 
 docker push ${CACHE_IMAGE}:$TAG
 docker push ${CACHE_IMAGE}:$TAG_PLOT
-docker push ${CACHE_IMAGE}:$TAG_FREQAI
-docker push ${CACHE_IMAGE}:$TAG_FREQAI_RL
+docker push ${CACHE_IMAGE}:$TAG_TRADEAI
+docker push ${CACHE_IMAGE}:$TAG_TRADEAI_RL
 
 docker images
 

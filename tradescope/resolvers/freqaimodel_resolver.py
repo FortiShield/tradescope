@@ -1,56 +1,56 @@
 # pragma pylint: disable=attribute-defined-outside-init
 
 """
-This module load a custom model for freqai
+This module load a custom model for tradeai
 """
 import logging
 from pathlib import Path
 
-from tradescope.constants import USERPATH_FREQAIMODELS, Config
+from tradescope.constants import USERPATH_TRADEAIMODELS, Config
 from tradescope.exceptions import OperationalException
-from tradescope.freqai.freqai_interface import IFreqaiModel
+from tradescope.tradeai.tradeai_interface import ITradeaiModel
 from tradescope.resolvers import IResolver
 
 
 logger = logging.getLogger(__name__)
 
 
-class FreqaiModelResolver(IResolver):
+class TradeaiModelResolver(IResolver):
     """
     This class contains all the logic to load custom hyperopt loss class
     """
 
-    object_type = IFreqaiModel
-    object_type_str = "FreqaiModel"
-    user_subdir = USERPATH_FREQAIMODELS
+    object_type = ITradeaiModel
+    object_type_str = "TradeaiModel"
+    user_subdir = USERPATH_TRADEAIMODELS
     initial_search_path = (
-        Path(__file__).parent.parent.joinpath("freqai/prediction_models").resolve()
+        Path(__file__).parent.parent.joinpath("tradeai/prediction_models").resolve()
     )
-    extra_path = "freqaimodel_path"
+    extra_path = "tradeaimodel_path"
 
     @staticmethod
-    def load_freqaimodel(config: Config) -> IFreqaiModel:
+    def load_tradeaimodel(config: Config) -> ITradeaiModel:
         """
         Load the custom class from config parameter
         :param config: configuration dictionary
         """
         disallowed_models = ["BaseRegressionModel"]
 
-        freqaimodel_name = config.get("freqaimodel")
-        if not freqaimodel_name:
+        tradeaimodel_name = config.get("tradeaimodel")
+        if not tradeaimodel_name:
             raise OperationalException(
-                "No freqaimodel set. Please use `--freqaimodel` to "
-                "specify the FreqaiModel class to use.\n"
+                "No tradeaimodel set. Please use `--tradeaimodel` to "
+                "specify the TradeaiModel class to use.\n"
             )
-        if freqaimodel_name in disallowed_models:
+        if tradeaimodel_name in disallowed_models:
             raise OperationalException(
-                f"{freqaimodel_name} is a baseclass and cannot be used directly. Please choose "
+                f"{tradeaimodel_name} is a baseclass and cannot be used directly. Please choose "
                 "an existing child class or inherit from this baseclass.\n"
             )
-        freqaimodel = FreqaiModelResolver.load_object(
-            freqaimodel_name,
+        tradeaimodel = TradeaiModelResolver.load_object(
+            tradeaimodel_name,
             config,
             kwargs={"config": config},
         )
 
-        return freqaimodel
+        return tradeaimodel

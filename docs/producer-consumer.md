@@ -94,8 +94,8 @@ class ProducerStrategy(IStrategy):
         return dataframe
 ```
 
-!!! Tip "FreqAI"
-    You can use this to setup [FreqAI](freqai.md) on a powerful machine, while you run consumers on simple machines like raspberries, which can interpret the signals generated from the producer in different ways.
+!!! Tip "TradeAI"
+    You can use this to setup [TradeAI](tradeai.md) on a powerful machine, while you run consumers on simple machines like raspberries, which can interpret the signals generated from the producer in different ways.
 
 
 ### Example - Consumer Strategy

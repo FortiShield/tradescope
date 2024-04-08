@@ -6,7 +6,7 @@ services:
     # image: khulnasoft/tradescope:develop
     # Use plotting image
     # image: khulnasoft/tradescope:develop_plot
-    # # Enable GPU Image and GPU Resources (only relevant for freqAI)
+    # # Enable GPU Image and GPU Resources (only relevant for tradeAI)
     # # Make sure to uncomment the whole deploy section
     # deploy:
     #   resources:

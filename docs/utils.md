@@ -216,20 +216,20 @@ Example: Search dedicated strategy path.
 tradescope list-strategies --strategy-path ~/.tradescope/strategies/
 ```
 
-## List freqAI models
+## List tradeAI models
 
-Use the `list-tradeaimodels` subcommand to see all freqAI models available.
+Use the `list-tradeaimodels` subcommand to see all tradeAI models available.
 
-This subcommand is useful for finding problems in your environment with loading freqAI models: modules with models that contain errors and failed to load are printed in red (LOAD FAILED), while models with duplicate names are printed in yellow (DUPLICATE NAME).
+This subcommand is useful for finding problems in your environment with loading tradeAI models: modules with models that contain errors and failed to load are printed in red (LOAD FAILED), while models with duplicate names are printed in yellow (DUPLICATE NAME).
 
 ```
 usage: tradescope list-tradeaimodels [-h] [-v] [--logfile FILE] [-V] [-c PATH]
                                    [-d PATH] [--userdir PATH]
-                                   [--freqaimodel-path PATH] [-1] [--no-color]
+                                   [--tradeaimodel-path PATH] [-1] [--no-color]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --freqaimodel-path PATH
+  --tradeaimodel-path PATH
                         Specify additional lookup path for tradeaimodels.
   -1, --one-column      Print output in one column.
   --no-color            Disable colorization of hyperopt results. May be

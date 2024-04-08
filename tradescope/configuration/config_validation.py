@@ -84,9 +84,9 @@ def validate_config_consistency(conf: Dict[str, Any], *, preliminary: bool = Fal
     _validate_protections(conf)
     _validate_unlimited_amount(conf)
     _validate_ask_orderbook(conf)
-    _validate_freqai_hyperopt(conf)
-    _validate_freqai_backtest(conf)
-    _validate_freqai_include_timeframes(conf, preliminary=preliminary)
+    _validate_tradeai_hyperopt(conf)
+    _validate_tradeai_backtest(conf)
+    _validate_tradeai_include_timeframes(conf, preliminary=preliminary)
     _validate_consumers(conf)
     validate_migrated_strategy_settings(conf)
 
@@ -327,59 +327,59 @@ def _validate_pricing_rules(conf: Dict[str, Any]) -> None:
             del conf['ask_strategy']
 
 
-def _validate_freqai_hyperopt(conf: Dict[str, Any]) -> None:
-    freqai_enabled = conf.get('freqai', {}).get('enabled', False)
+def _validate_tradeai_hyperopt(conf: Dict[str, Any]) -> None:
+    tradeai_enabled = conf.get('tradeai', {}).get('enabled', False)
     analyze_per_epoch = conf.get('analyze_per_epoch', False)
-    if analyze_per_epoch and freqai_enabled:
+    if analyze_per_epoch and tradeai_enabled:
         raise ConfigurationError(
-            'Using analyze-per-epoch parameter is not supported with a FreqAI strategy.')
+            'Using analyze-per-epoch parameter is not supported with a TradeAI strategy.')
 
 
-def _validate_freqai_include_timeframes(conf: Dict[str, Any], preliminary: bool) -> None:
-    freqai_enabled = conf.get('freqai', {}).get('enabled', False)
-    if freqai_enabled:
+def _validate_tradeai_include_timeframes(conf: Dict[str, Any], preliminary: bool) -> None:
+    tradeai_enabled = conf.get('tradeai', {}).get('enabled', False)
+    if tradeai_enabled:
         main_tf = conf.get('timeframe', '5m')
-        freqai_include_timeframes = conf.get('freqai', {}).get('feature_parameters', {}
+        tradeai_include_timeframes = conf.get('tradeai', {}).get('feature_parameters', {}
                                                                ).get('include_timeframes', [])
 
         from tradescope.exchange import timeframe_to_seconds
         main_tf_s = timeframe_to_seconds(main_tf)
         offending_lines = []
-        for tf in freqai_include_timeframes:
+        for tf in tradeai_include_timeframes:
             tf_s = timeframe_to_seconds(tf)
             if tf_s < main_tf_s:
                 offending_lines.append(tf)
         if offending_lines:
             raise ConfigurationError(
-                f"Main timeframe of {main_tf} must be smaller or equal to FreqAI "
+                f"Main timeframe of {main_tf} must be smaller or equal to TradeAI "
                 f"`include_timeframes`.Offending include-timeframes: {', '.join(offending_lines)}")
 
         # Ensure that the base timeframe is included in the include_timeframes list
-        if not preliminary and main_tf not in freqai_include_timeframes:
-            feature_parameters = conf.get('freqai', {}).get('feature_parameters', {})
-            include_timeframes = [main_tf] + freqai_include_timeframes
-            conf.get('freqai', {}).get('feature_parameters', {}) \
+        if not preliminary and main_tf not in tradeai_include_timeframes:
+            feature_parameters = conf.get('tradeai', {}).get('feature_parameters', {})
+            include_timeframes = [main_tf] + tradeai_include_timeframes
+            conf.get('tradeai', {}).get('feature_parameters', {}) \
                 .update({**feature_parameters, 'include_timeframes': include_timeframes})
 
 
-def _validate_freqai_backtest(conf: Dict[str, Any]) -> None:
+def _validate_tradeai_backtest(conf: Dict[str, Any]) -> None:
     if conf.get('runmode', RunMode.OTHER) == RunMode.BACKTEST:
-        freqai_enabled = conf.get('freqai', {}).get('enabled', False)
+        tradeai_enabled = conf.get('tradeai', {}).get('enabled', False)
         timerange = conf.get('timerange')
-        freqai_backtest_live_models = conf.get('freqai_backtest_live_models', False)
-        if freqai_backtest_live_models and freqai_enabled and timerange:
+        tradeai_backtest_live_models = conf.get('tradeai_backtest_live_models', False)
+        if tradeai_backtest_live_models and tradeai_enabled and timerange:
             raise ConfigurationError(
                 'Using timerange parameter is not supported with '
-                '--freqai-backtest-live-models parameter.')
+                '--tradeai-backtest-live-models parameter.')
 
-        if freqai_backtest_live_models and not freqai_enabled:
+        if tradeai_backtest_live_models and not tradeai_enabled:
             raise ConfigurationError(
-                'Using --freqai-backtest-live-models parameter is only '
-                'supported with a FreqAI strategy.')
+                'Using --tradeai-backtest-live-models parameter is only '
+                'supported with a TradeAI strategy.')
 
-        if freqai_enabled and not freqai_backtest_live_models and not timerange:
+        if tradeai_enabled and not tradeai_backtest_live_models and not timerange:
             raise ConfigurationError(
-                'Please pass --timerange if you intend to use FreqAI for backtesting.')
+                'Please pass --timerange if you intend to use TradeAI for backtesting.')
 
 
 def _validate_consumers(conf: Dict[str, Any]) -> None:

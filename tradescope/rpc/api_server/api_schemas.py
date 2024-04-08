@@ -473,7 +473,7 @@ class PairListsPayload(ExchangeModePayloadMixin, BaseModel):
     stake_currency: str
 
 
-class FreqAIModelListResponse(BaseModel):
+class TradeAIModelListResponse(BaseModel):
     tradeaimodels: List[str]
 
 
@@ -511,7 +511,7 @@ class PairHistory(BaseModel):
     data_stop_ts: int
 
 
-class BacktestFreqAIInputs(BaseModel):
+class BacktestTradeAIInputs(BaseModel):
     identifier: str
 
 
@@ -525,8 +525,8 @@ class BacktestRequest(BaseModel):
     enable_protections: bool
     dry_run_wallet: Optional[float] = None
     backtest_cache: Optional[str] = None
-    freqaimodel: Optional[str] = None
-    freqai: Optional[BacktestFreqAIInputs] = None
+    tradeaimodel: Optional[str] = None
+    tradeai: Optional[BacktestTradeAIInputs] = None
 
 
 class BacktestResponse(BaseModel):

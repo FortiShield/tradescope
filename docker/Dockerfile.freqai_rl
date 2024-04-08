@@ -1,5 +1,5 @@
 ARG sourceimage=khulnasoft/tradescope
-ARG sourcetag=develop_freqai
+ARG sourcetag=develop_tradeai
 FROM ${sourceimage}:${sourcetag}
 
 # Install dependencies

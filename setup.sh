@@ -52,8 +52,8 @@ function updateenv() {
     ${PYTHON} -m pip install --upgrade pip wheel setuptools
     REQUIREMENTS_HYPEROPT=""
     REQUIREMENTS_PLOT=""
-    REQUIREMENTS_FREQAI=""
-    REQUIREMENTS_FREQAI_RL=""
+    REQUIREMENTS_TRADEAI=""
+    REQUIREMENTS_TRADEAI_RL=""
     REQUIREMENTS=requirements.txt
 
     read -p "Do you want to install dependencies for development (Performs a full install with all dependencies) [y/N]? "
@@ -80,20 +80,20 @@ function updateenv() {
             fi
         fi
 
-        read -p "Do you want to install dependencies for freqai [y/N]? "
+        read -p "Do you want to install dependencies for tradeai [y/N]? "
         if [[ $REPLY =~ ^[Yy]$ ]]
         then
-            REQUIREMENTS_FREQAI="-r requirements-tradeai.txt --use-pep517"
-            read -p "Do you also want dependencies for freqai-rl or PyTorch (~700mb additional space required) [y/N]? "
+            REQUIREMENTS_TRADEAI="-r requirements-tradeai.txt --use-pep517"
+            read -p "Do you also want dependencies for tradeai-rl or PyTorch (~700mb additional space required) [y/N]? "
             if [[ $REPLY =~ ^[Yy]$ ]]
             then
-                REQUIREMENTS_FREQAI="-r requirements-tradeai-rl.txt"
+                REQUIREMENTS_TRADEAI="-r requirements-tradeai-rl.txt"
             fi
         fi
     fi
     install_talib
 
-    ${PYTHON} -m pip install --upgrade -r ${REQUIREMENTS} ${REQUIREMENTS_HYPEROPT} ${REQUIREMENTS_PLOT} ${REQUIREMENTS_FREQAI} ${REQUIREMENTS_FREQAI_RL}
+    ${PYTHON} -m pip install --upgrade -r ${REQUIREMENTS} ${REQUIREMENTS_HYPEROPT} ${REQUIREMENTS_PLOT} ${REQUIREMENTS_TRADEAI} ${REQUIREMENTS_TRADEAI_RL}
     if [ $? -ne 0 ]; then
         echo "Failed installing dependencies"
         exit 1

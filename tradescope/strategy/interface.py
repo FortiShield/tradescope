@@ -150,13 +150,13 @@ class IStrategy(ABC, HyperStrategyMixin):
                     informative_data.candle_type = config['candle_type_def']
                 self._ft_informative.append((informative_data, cls_method))
 
-    def load_freqAI_model(self) -> None:
-        if self.config.get('freqai', {}).get('enabled', False):
-            # Import here to avoid importing this if freqAI is disabled
-            from tradescope.freqai.utils import download_all_data_for_training
-            from tradescope.resolvers.freqaimodel_resolver import FreqaiModelResolver
-            self.freqai = FreqaiModelResolver.load_freqaimodel(self.config)
-            self.freqai_info = self.config["freqai"]
+    def load_tradeAI_model(self) -> None:
+        if self.config.get('tradeai', {}).get('enabled', False):
+            # Import here to avoid importing this if tradeAI is disabled
+            from tradescope.tradeai.utils import download_all_data_for_training
+            from tradescope.resolvers.tradeaimodel_resolver import TradeaiModelResolver
+            self.tradeai = TradeaiModelResolver.load_tradeaimodel(self.config)
+            self.tradeai_info = self.config["tradeai"]
 
             # download the desired data in dry/live
             if self.config.get('runmode') in (RunMode.DRY_RUN, RunMode.LIVE):
@@ -167,24 +167,24 @@ class IStrategy(ABC, HyperStrategyMixin):
                 )
                 download_all_data_for_training(self.dp, self.config)
         else:
-            # Gracious failures if freqAI is disabled but "start" is called.
+            # Gracious failures if tradeAI is disabled but "start" is called.
             class DummyClass:
                 def start(self, *args, **kwargs):
                     raise OperationalException(
-                        'freqAI is not enabled. '
+                        'tradeAI is not enabled. '
                         'Please enable it in your config to use this strategy.')
 
                 def shutdown(self, *args, **kwargs):
                     pass
 
-            self.freqai = DummyClass()  # type: ignore
+            self.tradeai = DummyClass()  # type: ignore
 
     def ft_bot_start(self, **kwargs) -> None:
         """
         Strategy init - runs after dataprovider has been added.
         Must call bot_start()
         """
-        self.load_freqAI_model()
+        self.load_tradeAI_model()
 
         strategy_safe_wrapper(self.bot_start)()
 
@@ -192,9 +192,9 @@ class IStrategy(ABC, HyperStrategyMixin):
 
     def ft_bot_cleanup(self) -> None:
         """
-        Clean up FreqAI and child threads
+        Clean up TradeAI and child threads
         """
-        self.freqai.shutdown()
+        self.tradeai.shutdown()
 
     @abstractmethod
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -627,8 +627,8 @@ class IStrategy(ABC, HyperStrategyMixin):
         Function designed to automatically generate, name and merge features
         from user indicated timeframes in the configuration file. User can add
         additional features here, but must follow the naming convention.
-        This method is *only* used in FreqaiDataKitchen class and therefore
-        it is only called if FreqAI is active.
+        This method is *only* used in TradeaiDataKitchen class and therefore
+        it is only called if TradeAI is active.
         :param pair: pair to be used as informative
         :param df: strategy dataframe which will receive merges from informatives
         :param tf: timeframe of the dataframe which will modify the feature names
@@ -639,7 +639,7 @@ class IStrategy(ABC, HyperStrategyMixin):
     def feature_engineering_expand_all(self, dataframe: DataFrame, period: int,
                                        metadata: Dict, **kwargs) -> DataFrame:
         """
-        *Only functional with FreqAI enabled strategies*
+        *Only functional with TradeAI enabled strategies*
         This function will automatically expand the defined features on the config defined
         `indicator_periods_candles`, `include_timeframes`, `include_shifted_candles`, and
         `include_corr_pairs`. In other words, a single feature defined in this function
@@ -647,14 +647,14 @@ class IStrategy(ABC, HyperStrategyMixin):
         `indicator_periods_candles` * `include_timeframes` * `include_shifted_candles` *
         `include_corr_pairs` numbers of features added to the model.
 
-        All features must be prepended with `%` to be recognized by FreqAI internals.
+        All features must be prepended with `%` to be recognized by TradeAI internals.
 
         More details on how these config defined parameters accelerate feature engineering
         in the documentation at:
 
-        https://www.tradescope.io/en/latest/freqai-parameter-table/#feature-parameters
+        https://www.tradescope.io/en/latest/tradeai-parameter-table/#feature-parameters
 
-        https://www.tradescope.io/en/latest/freqai-feature-engineering/#defining-the-features
+        https://www.tradescope.io/en/latest/tradeai-feature-engineering/#defining-the-features
 
         :param dataframe: strategy dataframe which will receive the features
         :param period: period of the indicator - usage example:
@@ -666,7 +666,7 @@ class IStrategy(ABC, HyperStrategyMixin):
     def feature_engineering_expand_basic(
             self, dataframe: DataFrame, metadata: Dict, **kwargs) -> DataFrame:
         """
-        *Only functional with FreqAI enabled strategies*
+        *Only functional with TradeAI enabled strategies*
         This function will automatically expand the defined features on the config defined
         `include_timeframes`, `include_shifted_candles`, and `include_corr_pairs`.
         In other words, a single feature defined in this function
@@ -677,14 +677,14 @@ class IStrategy(ABC, HyperStrategyMixin):
         Features defined here will *not* be automatically duplicated on user defined
         `indicator_periods_candles`
 
-        All features must be prepended with `%` to be recognized by FreqAI internals.
+        All features must be prepended with `%` to be recognized by TradeAI internals.
 
         More details on how these config defined parameters accelerate feature engineering
         in the documentation at:
 
-        https://www.tradescope.io/en/latest/freqai-parameter-table/#feature-parameters
+        https://www.tradescope.io/en/latest/tradeai-parameter-table/#feature-parameters
 
-        https://www.tradescope.io/en/latest/freqai-feature-engineering/#defining-the-features
+        https://www.tradescope.io/en/latest/tradeai-feature-engineering/#defining-the-features
 
         :param dataframe: strategy dataframe which will receive the features
         :param metadata: metadata of current pair
@@ -696,21 +696,21 @@ class IStrategy(ABC, HyperStrategyMixin):
     def feature_engineering_standard(
             self, dataframe: DataFrame, metadata: Dict, **kwargs) -> DataFrame:
         """
-        *Only functional with FreqAI enabled strategies*
+        *Only functional with TradeAI enabled strategies*
         This optional function will be called once with the dataframe of the base timeframe.
         This is the final function to be called, which means that the dataframe entering this
         function will contain all the features and columns created by all other
-        freqai_feature_engineering_* functions.
+        tradeai_feature_engineering_* functions.
 
         This function is a good place to do custom exotic feature extractions (e.g. tsfresh).
         This function is a good place for any feature that should not be auto-expanded upon
         (e.g. day of the week).
 
-        All features must be prepended with `%` to be recognized by FreqAI internals.
+        All features must be prepended with `%` to be recognized by TradeAI internals.
 
         More details about feature engineering available:
 
-        https://www.tradescope.io/en/latest/freqai-feature-engineering
+        https://www.tradescope.io/en/latest/tradeai-feature-engineering
 
         :param dataframe: strategy dataframe which will receive the features
         :param metadata: metadata of current pair
@@ -718,15 +718,15 @@ class IStrategy(ABC, HyperStrategyMixin):
         """
         return dataframe
 
-    def set_freqai_targets(self, dataframe: DataFrame, metadata: Dict, **kwargs) -> DataFrame:
+    def set_tradeai_targets(self, dataframe: DataFrame, metadata: Dict, **kwargs) -> DataFrame:
         """
-        *Only functional with FreqAI enabled strategies*
+        *Only functional with TradeAI enabled strategies*
         Required function to set the targets for the model.
-        All targets must be prepended with `&` to be recognized by the FreqAI internals.
+        All targets must be prepended with `&` to be recognized by the TradeAI internals.
 
         More details about feature engineering available:
 
-        https://www.tradescope.io/en/latest/freqai-feature-engineering
+        https://www.tradescope.io/en/latest/tradeai-feature-engineering
 
         :param dataframe: strategy dataframe which will receive the targets
         :param metadata: metadata of current pair
@@ -770,16 +770,16 @@ class IStrategy(ABC, HyperStrategyMixin):
             stake_amount = resp
         return stake_amount, order_tag
 
-    def __informative_pairs_freqai(self) -> ListPairsWithTimeframes:
+    def __informative_pairs_tradeai(self) -> ListPairsWithTimeframes:
         """
-        Create informative-pairs needed for FreqAI
+        Create informative-pairs needed for TradeAI
         """
-        if self.config.get('freqai', {}).get('enabled', False):
+        if self.config.get('tradeai', {}).get('enabled', False):
             whitelist_pairs = self.dp.current_whitelist()
             candle_type = self.config.get('candle_type_def', CandleType.SPOT)
-            corr_pairs = self.config["freqai"]["feature_parameters"]["include_corr_pairlist"]
+            corr_pairs = self.config["tradeai"]["feature_parameters"]["include_corr_pairlist"]
             informative_pairs = []
-            for tf in self.config["freqai"]["feature_parameters"]["include_timeframes"]:
+            for tf in self.config["tradeai"]["feature_parameters"]["include_timeframes"]:
                 for pair in set(whitelist_pairs + corr_pairs):
                     informative_pairs.append((pair, tf, candle_type))
             return informative_pairs
@@ -821,7 +821,7 @@ class IStrategy(ABC, HyperStrategyMixin):
             else:
                 for pair in self.dp.current_whitelist():
                     informative_pairs.append((pair, inf_data.timeframe, candle_type))
-        informative_pairs.extend(self.__informative_pairs_freqai())
+        informative_pairs.extend(self.__informative_pairs_tradeai())
         return list(set(informative_pairs))
 
     def get_strategy_name(self) -> str:

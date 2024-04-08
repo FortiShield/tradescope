@@ -15,7 +15,7 @@ from tradescope.rpc.api_server.api_schemas import (AvailablePairs, Balances, Bla
                                                    DeleteLockRequest, DeleteTrade, Entry,
                                                    ExchangeListResponse, Exit, ForceEnterPayload,
                                                    ForceEnterResponse, ForceExitPayload,
-                                                   FreqAIModelListResponse, Health, Locks,
+                                                   TradeAIModelListResponse, Health, Locks,
                                                    LocksPayload, Logs, MixTag, OpenTradeSchema,
                                                    PairHistory, PerformanceEntry, Ping, PlotConfig,
                                                    Profit, ResultMsg, ShowConfig, Stats, StatusMsg,
@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 # 2.17: Forceentry - leverage, partial force_exit
 # 2.20: Add websocket endpoints
 # 2.21: Add new_candle messagetype
-# 2.22: Add FreqAI to backtesting
+# 2.22: Add TradeAI to backtesting
 # 2.23: Allow plot config request in webserver mode
 # 2.24: Add cancel_open_order endpoint
 # 2.25: Add several profit values to /status endpoint
@@ -296,7 +296,7 @@ def pair_candles(
 
 @router.get('/pair_history', response_model=PairHistory, tags=['candle data'])
 def pair_history(pair: str, timeframe: str, timerange: str, strategy: str,
-                 freqaimodel: Optional[str] = None,
+                 tradeaimodel: Optional[str] = None,
                  config=Depends(get_config), exchange=Depends(get_exchange)):
     # The initial call to this endpoint can be slow, as it may need to initialize
     # the exchange class.
@@ -304,7 +304,7 @@ def pair_history(pair: str, timeframe: str, timerange: str, strategy: str,
     config.update({
         'strategy': strategy,
         'timerange': timerange,
-        'freqaimodel': freqaimodel if freqaimodel else config.get('freqaimodel'),
+        'tradeaimodel': tradeaimodel if tradeaimodel else config.get('tradeaimodel'),
     })
     try:
         return RPC._rpc_analysed_history_full(config, pair, timeframe, exchange)
@@ -370,10 +370,10 @@ def list_exchanges(config=Depends(get_config)):
     }
 
 
-@router.get('/tradeaimodels', response_model=FreqAIModelListResponse, tags=['freqai'])
+@router.get('/tradeaimodels', response_model=TradeAIModelListResponse, tags=['tradeai'])
 def list_tradeaimodels(config=Depends(get_config)):
-    from tradescope.resolvers.freqaimodel_resolver import FreqaiModelResolver
-    models = FreqaiModelResolver.search_all_objects(
+    from tradescope.resolvers.tradeaimodel_resolver import TradeaiModelResolver
+    models = TradeaiModelResolver.search_all_objects(
         config, False)
     models = sorted(models, key=lambda x: x['name'])
 

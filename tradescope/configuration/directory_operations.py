@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 from tradescope.configuration.detect_environment import running_in_docker
-from tradescope.constants import (USER_DATA_FILES, USERPATH_FREQAIMODELS, USERPATH_HYPEROPTS,
+from tradescope.constants import (USER_DATA_FILES, USERPATH_TRADEAIMODELS, USERPATH_HYPEROPTS,
                                   USERPATH_NOTEBOOKS, USERPATH_STRATEGIES, Config)
 from tradescope.exceptions import OperationalException
 
@@ -51,7 +51,7 @@ def create_userdata_dir(directory: str, create_dir: bool = False) -> Path:
     :return: Path object containing the directory
     """
     sub_dirs = ["backtest_results", "data", USERPATH_HYPEROPTS, "hyperopt_results", "logs",
-                USERPATH_NOTEBOOKS, "plot", USERPATH_STRATEGIES, USERPATH_FREQAIMODELS]
+                USERPATH_NOTEBOOKS, "plot", USERPATH_STRATEGIES, USERPATH_TRADEAIMODELS]
     folder = Path(directory)
     chown_user_directory(folder)
     if not folder.is_dir():

@@ -115,13 +115,13 @@ def start_list_strategies(args: Dict[str, Any]) -> None:
         _print_objs_tabular(strategy_objs, config.get('print_colorized', False))
 
 
-def start_list_freqAI_models(args: Dict[str, Any]) -> None:
+def start_list_tradeAI_models(args: Dict[str, Any]) -> None:
     """
-    Print files with FreqAI models custom classes available in the directory
+    Print files with TradeAI models custom classes available in the directory
     """
     config = setup_utils_configuration(args, RunMode.UTIL_NO_EXCHANGE)
-    from tradescope.resolvers.freqaimodel_resolver import FreqaiModelResolver
-    model_objs = FreqaiModelResolver.search_all_objects(config, not args['print_one_column'])
+    from tradescope.resolvers.tradeaimodel_resolver import TradeaiModelResolver
+    model_objs = TradeaiModelResolver.search_all_objects(config, not args['print_one_column'])
     # Sort alphabetically
     model_objs = sorted(model_objs, key=lambda x: x['name'])
     if args['print_one_column']:

@@ -15,7 +15,7 @@ from tradescope.commands.db_commands import start_convert_db
 from tradescope.commands.deploy_commands import (start_create_userdir, start_install_ui,
                                                  start_new_strategy)
 from tradescope.commands.hyperopt_commands import start_hyperopt_list, start_hyperopt_show
-from tradescope.commands.list_commands import (start_list_exchanges, start_list_freqAI_models,
+from tradescope.commands.list_commands import (start_list_exchanges, start_list_tradeAI_models,
                                                start_list_markets, start_list_strategies,
                                                start_list_timeframes, start_show_trades)
 from tradescope.commands.optimize_commands import (start_backtesting, start_backtesting_show,

@@ -21,7 +21,7 @@ from tradescope.commands import (start_backtesting_show, start_convert_data, sta
 from tradescope.commands.db_commands import start_convert_db
 from tradescope.commands.deploy_commands import (clean_ui_subdir, download_and_install_ui,
                                                  get_ui_download_url, read_ui_version)
-from tradescope.commands.list_commands import start_list_freqAI_models
+from tradescope.commands.list_commands import start_list_tradeAI_models
 from tradescope.configuration import setup_utils_configuration
 from tradescope.enums import RunMode
 from tradescope.exceptions import OperationalException
@@ -928,7 +928,7 @@ def test_start_list_strategies(capsys):
     assert str(Path("broken_strats/broken_futures_strategies.py")) in captured.out
 
 
-def test_start_list_freqAI_models(capsys):
+def test_start_list_tradeAI_models(capsys):
 
     args = [
         "list-tradeaimodels",
@@ -936,7 +936,7 @@ def test_start_list_freqAI_models(capsys):
     ]
     pargs = get_args(args)
     pargs['config'] = None
-    start_list_freqAI_models(pargs)
+    start_list_tradeAI_models(pargs)
     captured = capsys.readouterr()
     assert "LightGBMClassifier" in captured.out
     assert "LightGBMRegressor" in captured.out
@@ -948,7 +948,7 @@ def test_start_list_freqAI_models(capsys):
     ]
     pargs = get_args(args)
     pargs['config'] = None
-    start_list_freqAI_models(pargs)
+    start_list_tradeAI_models(pargs)
     captured = capsys.readouterr()
     assert "LightGBMClassifier" in captured.out
     assert "LightGBMRegressor" in captured.out

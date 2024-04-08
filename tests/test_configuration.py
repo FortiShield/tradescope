@@ -911,10 +911,10 @@ def test__validate_pricing_rules(default_conf, caplog) -> None:
         validate_config_consistency(conf)
 
 
-def test__validate_freqai_include_timeframes(default_conf, caplog) -> None:
+def test__validate_tradeai_include_timeframes(default_conf, caplog) -> None:
     conf = deepcopy(default_conf)
     conf.update({
-            "freqai": {
+            "tradeai": {
                 "enabled": True,
                 "feature_parameters": {
                     "include_timeframes": ["1m", "5m"],
@@ -931,13 +931,13 @@ def test__validate_freqai_include_timeframes(default_conf, caplog) -> None:
     validate_config_consistency(conf)
 
     # Ensure base timeframe is in include_timeframes
-    conf['freqai']['feature_parameters']['include_timeframes'] = ["5m", "15m"]
+    conf['tradeai']['feature_parameters']['include_timeframes'] = ["5m", "15m"]
     validate_config_consistency(conf)
-    assert conf['freqai']['feature_parameters']['include_timeframes'] == ["1m", "5m", "15m"]
+    assert conf['tradeai']['feature_parameters']['include_timeframes'] == ["1m", "5m", "15m"]
 
     conf.update({'analyze_per_epoch': True})
     with pytest.raises(OperationalException,
-                       match=r"Using analyze-per-epoch .* not supported with a FreqAI strategy."):
+                       match=r"Using analyze-per-epoch .* not supported with a TradeAI strategy."):
         validate_config_consistency(conf)
 
 
@@ -1427,7 +1427,7 @@ def test_flat_vars_to_nested_dict(caplog):
     assert not log_has("Loading variable 'NOT_RELEVANT'", caplog)
 
 
-def test_setup_hyperopt_freqai(mocker, default_conf) -> None:
+def test_setup_hyperopt_tradeai(mocker, default_conf) -> None:
     patched_configuration_load_config_file(mocker, default_conf)
     mocker.patch(
         'tradescope.configuration.configuration.create_datadir',
@@ -1442,7 +1442,7 @@ def test_setup_hyperopt_freqai(mocker, default_conf) -> None:
         '--config', 'config.json',
         '--strategy', CURRENT_TEST_STRATEGY,
         '--timerange', '20220801-20220805',
-        "--freqaimodel",
+        "--tradeaimodel",
         "LightGBMRegressorMultiTarget",
         "--analyze-per-epoch"
     ]
@@ -1451,7 +1451,7 @@ def test_setup_hyperopt_freqai(mocker, default_conf) -> None:
 
     configuration = Configuration(args)
     config = configuration.get_config()
-    config['freqai'] = {
+    config['tradeai'] = {
         "enabled": True
     }
     with pytest.raises(
@@ -1460,7 +1460,7 @@ def test_setup_hyperopt_freqai(mocker, default_conf) -> None:
         validate_config_consistency(config)
 
 
-def test_setup_freqai_backtesting(mocker, default_conf) -> None:
+def test_setup_tradeai_backtesting(mocker, default_conf) -> None:
     patched_configuration_load_config_file(mocker, default_conf)
     mocker.patch(
         'tradescope.configuration.configuration.create_datadir',
@@ -1475,9 +1475,9 @@ def test_setup_freqai_backtesting(mocker, default_conf) -> None:
         '--config', 'config.json',
         '--strategy', CURRENT_TEST_STRATEGY,
         '--timerange', '20220801-20220805',
-        "--freqaimodel",
+        "--tradeaimodel",
         "LightGBMRegressorMultiTarget",
-        "--freqai-backtest-live-models"
+        "--tradeai-backtest-live-models"
     ]
 
     args = Arguments(arglist).get_parsed_arg()
@@ -1487,12 +1487,12 @@ def test_setup_freqai_backtesting(mocker, default_conf) -> None:
     config['runmode'] = RunMode.BACKTEST
 
     with pytest.raises(
-        OperationalException, match=r".*--freqai-backtest-live-models parameter is only.*"
+        OperationalException, match=r".*--tradeai-backtest-live-models parameter is only.*"
     ):
         validate_config_consistency(config)
 
     conf = deepcopy(config)
-    conf['freqai'] = {
+    conf['tradeai'] = {
         "enabled": True
     }
     with pytest.raises(
@@ -1501,10 +1501,10 @@ def test_setup_freqai_backtesting(mocker, default_conf) -> None:
         validate_config_consistency(conf)
 
     conf['timerange'] = None
-    conf['freqai_backtest_live_models'] = False
+    conf['tradeai_backtest_live_models'] = False
 
     with pytest.raises(
-        OperationalException, match=r".* pass --timerange if you intend to use FreqAI .*"
+        OperationalException, match=r".* pass --timerange if you intend to use TradeAI .*"
     ):
         validate_config_consistency(conf)
 

@@ -12,8 +12,8 @@ from tradescope.constants import DEFAULT_CONFIG
 
 ARGS_COMMON = ["verbosity", "logfile", "version", "config", "datadir", "user_data_dir"]
 
-ARGS_STRATEGY = ["strategy", "strategy_path", "recursive_strategy_search", "freqaimodel",
-                 "freqaimodel_path"]
+ARGS_STRATEGY = ["strategy", "strategy_path", "recursive_strategy_search", "tradeaimodel",
+                 "tradeaimodel_path"]
 
 ARGS_TRADE = ["db_url", "sd_notify", "dry_run", "dry_run_wallet", "fee"]
 
@@ -26,7 +26,7 @@ ARGS_BACKTEST = ARGS_COMMON_OPTIMIZE + ["position_stacking", "use_max_market_pos
                                         "enable_protections", "dry_run_wallet", "timeframe_detail",
                                         "strategy_list", "export", "exportfilename",
                                         "backtest_breakdown", "backtest_cache",
-                                        "freqai_backtest_live_models"]
+                                        "tradeai_backtest_live_models"]
 
 ARGS_HYPEROPT = ARGS_COMMON_OPTIMIZE + ["hyperopt", "hyperopt_path",
                                         "position_stacking", "use_max_market_positions",
@@ -42,7 +42,7 @@ ARGS_EDGE = ARGS_COMMON_OPTIMIZE + ["stoploss_range"]
 ARGS_LIST_STRATEGIES = ["strategy_path", "print_one_column", "print_colorized",
                         "recursive_strategy_search"]
 
-ARGS_LIST_FREQAIMODELS = ["freqaimodel_path", "print_one_column", "print_colorized"]
+ARGS_LIST_TRADEAIMODELS = ["tradeaimodel_path", "print_one_column", "print_colorized"]
 
 ARGS_LIST_HYPEROPTS = ["hyperopt_path", "print_one_column", "print_colorized"]
 
@@ -206,7 +206,7 @@ class Arguments:
                                          start_create_userdir, start_download_data, start_edge,
                                          start_hyperopt, start_hyperopt_list, start_hyperopt_show,
                                          start_install_ui, start_list_data, start_list_exchanges,
-                                         start_list_freqAI_models, start_list_markets,
+                                         start_list_tradeAI_models, start_list_markets,
                                          start_list_strategies, start_list_timeframes,
                                          start_lookahead_analysis, start_new_config,
                                          start_new_strategy, start_plot_dataframe,
@@ -406,14 +406,14 @@ class Arguments:
         list_strategies_cmd.set_defaults(func=start_list_strategies)
         self._build_args(optionlist=ARGS_LIST_STRATEGIES, parser=list_strategies_cmd)
 
-        # Add list-freqAI Models subcommand
+        # Add list-tradeAI Models subcommand
         list_tradeaimodels_cmd = subparsers.add_parser(
             'list-tradeaimodels',
-            help='Print available freqAI models.',
+            help='Print available tradeAI models.',
             parents=[_common_parser],
         )
-        list_tradeaimodels_cmd.set_defaults(func=start_list_freqAI_models)
-        self._build_args(optionlist=ARGS_LIST_FREQAIMODELS, parser=list_tradeaimodels_cmd)
+        list_tradeaimodels_cmd.set_defaults(func=start_list_tradeAI_models)
+        self._build_args(optionlist=ARGS_LIST_TRADEAIMODELS, parser=list_tradeaimodels_cmd)
 
         # Add list-timeframes subcommand
         list_timeframes_cmd = subparsers.add_parser(

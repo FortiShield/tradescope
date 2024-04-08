@@ -12,9 +12,9 @@ from tradescope.strategy import DecimalParameter, IntParameter, IStrategy
 logger = logging.getLogger(__name__)
 
 
-class freqai_test_multimodel_classifier_strat(IStrategy):
+class tradeai_test_multimodel_classifier_strat(IStrategy):
     """
-    Test strategy - used for testing freqAI multimodel functionalities.
+    Test strategy - used for testing tradeAI multimodel functionalities.
     DO not use in production.
     """
 
@@ -68,7 +68,7 @@ class freqai_test_multimodel_classifier_strat(IStrategy):
 
         return dataframe
 
-    def set_freqai_targets(self, dataframe: DataFrame, metadata: Dict, **kwargs):
+    def set_tradeai_targets(self, dataframe: DataFrame, metadata: Dict, **kwargs):
 
         dataframe['&s-up_or_down'] = np.where(dataframe["close"].shift(-50) >
                                               dataframe["close"], 'up', 'down')
@@ -80,9 +80,9 @@ class freqai_test_multimodel_classifier_strat(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        self.freqai_info = self.config["freqai"]
+        self.tradeai_info = self.config["tradeai"]
 
-        dataframe = self.freqai.start(dataframe, metadata, self)
+        dataframe = self.tradeai.start(dataframe, metadata, self)
 
         dataframe["target_roi"] = dataframe["&-s_close_mean"] + dataframe["&-s_close_std"] * 1.25
         dataframe["sell_roi"] = dataframe["&-s_close_mean"] - dataframe["&-s_close_std"] * 1.25

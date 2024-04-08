@@ -10,15 +10,15 @@ GHCR_IMAGE_NAME=ghcr.io/khulnasoft/tradescope
 # Replace / with _ to create a valid tag
 TAG=$(echo "${BRANCH_NAME}" | sed -e "s/\//_/g")
 TAG_PLOT=${TAG}_plot
-TAG_FREQAI=${TAG}_freqai
-TAG_FREQAI_RL=${TAG_FREQAI}rl
-TAG_FREQAI_TORCH=${TAG_FREQAI}torch
+TAG_TRADEAI=${TAG}_tradeai
+TAG_TRADEAI_RL=${TAG_TRADEAI}rl
+TAG_TRADEAI_TORCH=${TAG_TRADEAI}torch
 TAG_PI="${TAG}_pi"
 
 TAG_ARM=${TAG}_arm
 TAG_PLOT_ARM=${TAG_PLOT}_arm
-TAG_FREQAI_ARM=${TAG_FREQAI}_arm
-TAG_FREQAI_RL_ARM=${TAG_FREQAI_RL}_arm
+TAG_TRADEAI_ARM=${TAG_TRADEAI}_arm
+TAG_TRADEAI_RL_ARM=${TAG_TRADEAI_RL}_arm
 
 echo "Running for ${TAG}"
 
@@ -44,14 +44,14 @@ if [ $? -ne 0 ]; then
 fi
 
 docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG_ARM} -t tradescope:${TAG_PLOT_ARM} -f docker/Dockerfile.plot .
-docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG_ARM} -t tradescope:${TAG_FREQAI_ARM} -f docker/Dockerfile.freqai .
-docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG_FREQAI_ARM} -t tradescope:${TAG_FREQAI_RL_ARM} -f docker/Dockerfile.freqai_rl .
+docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG_ARM} -t tradescope:${TAG_TRADEAI_ARM} -f docker/Dockerfile.tradeai .
+docker build --build-arg sourceimage=tradescope --build-arg sourcetag=${TAG_TRADEAI_ARM} -t tradescope:${TAG_TRADEAI_RL_ARM} -f docker/Dockerfile.tradeai_rl .
 
 # Tag image for upload and next build step
 docker tag tradescope:$TAG_ARM ${CACHE_IMAGE}:$TAG_ARM
 docker tag tradescope:$TAG_PLOT_ARM ${CACHE_IMAGE}:$TAG_PLOT_ARM
-docker tag tradescope:$TAG_FREQAI_ARM ${CACHE_IMAGE}:$TAG_FREQAI_ARM
-docker tag tradescope:$TAG_FREQAI_RL_ARM ${CACHE_IMAGE}:$TAG_FREQAI_RL_ARM
+docker tag tradescope:$TAG_TRADEAI_ARM ${CACHE_IMAGE}:$TAG_TRADEAI_ARM
+docker tag tradescope:$TAG_TRADEAI_RL_ARM ${CACHE_IMAGE}:$TAG_TRADEAI_RL_ARM
 
 # Run backtest
 docker run --rm -v $(pwd)/tests/testdata/config.tests.json:/tradescope/config.json:ro -v $(pwd)/tests:/tests tradescope:${TAG_ARM} backtesting --datadir /tests/testdata --strategy-path /tests/strategy/strats/ --strategy StrategyTestV3
@@ -64,8 +64,8 @@ fi
 docker images
 
 docker push ${CACHE_IMAGE}:$TAG_PLOT_ARM
-docker push ${CACHE_IMAGE}:$TAG_FREQAI_ARM
-docker push ${CACHE_IMAGE}:$TAG_FREQAI_RL_ARM
+docker push ${CACHE_IMAGE}:$TAG_TRADEAI_ARM
+docker push ${CACHE_IMAGE}:$TAG_TRADEAI_RL_ARM
 docker push ${CACHE_IMAGE}:$TAG_ARM
 
 # Create multi-arch image
@@ -79,15 +79,15 @@ docker manifest push -p ${IMAGE_NAME}:${TAG}
 docker manifest create ${IMAGE_NAME}:${TAG_PLOT} ${CACHE_IMAGE}:${TAG_PLOT} ${CACHE_IMAGE}:${TAG_PLOT_ARM}
 docker manifest push -p ${IMAGE_NAME}:${TAG_PLOT}
 
-docker manifest create ${IMAGE_NAME}:${TAG_FREQAI} ${CACHE_IMAGE}:${TAG_FREQAI} ${CACHE_IMAGE}:${TAG_FREQAI_ARM}
-docker manifest push -p ${IMAGE_NAME}:${TAG_FREQAI}
+docker manifest create ${IMAGE_NAME}:${TAG_TRADEAI} ${CACHE_IMAGE}:${TAG_TRADEAI} ${CACHE_IMAGE}:${TAG_TRADEAI_ARM}
+docker manifest push -p ${IMAGE_NAME}:${TAG_TRADEAI}
 
-docker manifest create ${IMAGE_NAME}:${TAG_FREQAI_RL} ${CACHE_IMAGE}:${TAG_FREQAI_RL} ${CACHE_IMAGE}:${TAG_FREQAI_RL_ARM}
-docker manifest push -p ${IMAGE_NAME}:${TAG_FREQAI_RL}
+docker manifest create ${IMAGE_NAME}:${TAG_TRADEAI_RL} ${CACHE_IMAGE}:${TAG_TRADEAI_RL} ${CACHE_IMAGE}:${TAG_TRADEAI_RL_ARM}
+docker manifest push -p ${IMAGE_NAME}:${TAG_TRADEAI_RL}
 
 # Create special Torch tag - which is identical to the RL tag.
-docker manifest create ${IMAGE_NAME}:${TAG_FREQAI_TORCH} ${CACHE_IMAGE}:${TAG_FREQAI_RL} ${CACHE_IMAGE}:${TAG_FREQAI_RL_ARM}
-docker manifest push -p ${IMAGE_NAME}:${TAG_FREQAI_TORCH}
+docker manifest create ${IMAGE_NAME}:${TAG_TRADEAI_TORCH} ${CACHE_IMAGE}:${TAG_TRADEAI_RL} ${CACHE_IMAGE}:${TAG_TRADEAI_RL_ARM}
+docker manifest push -p ${IMAGE_NAME}:${TAG_TRADEAI_TORCH}
 
 # copy images to ghcr.io
 
@@ -97,9 +97,9 @@ chmod a+rwx .crane
 
 echo "${GHCR_TOKEN}" | crane auth login ghcr.io -u "${GHCR_USERNAME}" --password-stdin
 
-crane copy ${IMAGE_NAME}:${TAG_FREQAI_RL} ${GHCR_IMAGE_NAME}:${TAG_FREQAI_RL}
-crane copy ${IMAGE_NAME}:${TAG_FREQAI_RL} ${GHCR_IMAGE_NAME}:${TAG_FREQAI_TORCH}
-crane copy ${IMAGE_NAME}:${TAG_FREQAI} ${GHCR_IMAGE_NAME}:${TAG_FREQAI}
+crane copy ${IMAGE_NAME}:${TAG_TRADEAI_RL} ${GHCR_IMAGE_NAME}:${TAG_TRADEAI_RL}
+crane copy ${IMAGE_NAME}:${TAG_TRADEAI_RL} ${GHCR_IMAGE_NAME}:${TAG_TRADEAI_TORCH}
+crane copy ${IMAGE_NAME}:${TAG_TRADEAI} ${GHCR_IMAGE_NAME}:${TAG_TRADEAI}
 crane copy ${IMAGE_NAME}:${TAG_PLOT} ${GHCR_IMAGE_NAME}:${TAG_PLOT}
 crane copy ${IMAGE_NAME}:${TAG} ${GHCR_IMAGE_NAME}:${TAG}
 

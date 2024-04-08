@@ -2,7 +2,7 @@
 version: '3'
 services:
   tradescope:
-    image: khulnasoft/tradescope:stable_freqaitorch
+    image: khulnasoft/tradescope:stable_tradeaitorch
     # # Enable GPU Image and GPU Resources
     # # Make sure to uncomment the whole deploy section
     # deploy:
@@ -32,5 +32,5 @@ services:
       --logfile /tradescope/user_data/logs/tradescope.log
       --db-url sqlite:////tradescope/user_data/tradesv3.sqlite
       --config /tradescope/user_data/config.json
-      --freqaimodel XGBoostRegressor
-      --strategy FreqaiExampleStrategy
+      --tradeaimodel XGBoostRegressor
+      --strategy TradeaiExampleStrategy

@@ -1,7 +1,7 @@
-from tradescope_client.ft_rest_client import FtRestClient
+from tradescope_client.ts_rest_client import FtRestClient
 
 
-__version__ = '2024.4-dev'
+__version__ = '2024.4'
 
 if 'dev' in __version__:
     from pathlib import Path

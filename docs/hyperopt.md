@@ -156,9 +156,9 @@ Strategy arguments:
   --recursive-strategy-search
                         Recursively search for a strategy in the strategies
                         folder.
-  --freqaimodel NAME    Specify a custom freqaimodels.
+  --freqaimodel NAME    Specify a custom tradeaimodels.
   --freqaimodel-path PATH
-                        Specify additional lookup path for freqaimodels.
+                        Specify additional lookup path for tradeaimodels.
 
 ```
 

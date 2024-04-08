@@ -1773,7 +1773,7 @@ def test_api_exchanges(botclient):
     }
 
 
-def test_api_freqaimodels(botclient, tmp_path, mocker):
+def test_api_tradeaimodels(botclient, tmp_path, mocker):
     ftbot, client = botclient
     ftbot.config['user_data_dir'] = tmp_path
     mocker.patch(
@@ -1793,11 +1793,11 @@ def test_api_freqaimodels(botclient, tmp_path, mocker):
             {'name': 'XGBoostRegressorMultiTarget'},
         ])
 
-    rc = client_get(client, f"{BASE_URI}/freqaimodels")
+    rc = client_get(client, f"{BASE_URI}/tradeaimodels")
 
     assert_response(rc)
 
-    assert rc.json() == {'freqaimodels': [
+    assert rc.json() == {'tradeaimodels': [
         'LightGBMClassifier',
         'LightGBMClassifierMultiTarget',
         'LightGBMRegressor',

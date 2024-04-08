@@ -111,7 +111,7 @@ ARGS_ANALYZE_ENTRIES_EXITS = ["exportfilename", "analysis_groups", "enter_reason
                               "analysis_rejected", "analysis_to_csv", "analysis_csv_path"]
 
 NO_CONF_REQURIED = ["convert-data", "convert-trade-data", "download-data", "list-timeframes",
-                    "list-markets", "list-pairs", "list-strategies", "list-freqaimodels",
+                    "list-markets", "list-pairs", "list-strategies", "list-tradeaimodels",
                     "list-data", "hyperopt-list", "hyperopt-show", "backtest-filter",
                     "plot-dataframe", "plot-profit", "show-trades", "trades-to-ohlcv",
                     "strategy-updater"]
@@ -407,13 +407,13 @@ class Arguments:
         self._build_args(optionlist=ARGS_LIST_STRATEGIES, parser=list_strategies_cmd)
 
         # Add list-freqAI Models subcommand
-        list_freqaimodels_cmd = subparsers.add_parser(
-            'list-freqaimodels',
+        list_tradeaimodels_cmd = subparsers.add_parser(
+            'list-tradeaimodels',
             help='Print available freqAI models.',
             parents=[_common_parser],
         )
-        list_freqaimodels_cmd.set_defaults(func=start_list_freqAI_models)
-        self._build_args(optionlist=ARGS_LIST_FREQAIMODELS, parser=list_freqaimodels_cmd)
+        list_tradeaimodels_cmd.set_defaults(func=start_list_freqAI_models)
+        self._build_args(optionlist=ARGS_LIST_FREQAIMODELS, parser=list_tradeaimodels_cmd)
 
         # Add list-timeframes subcommand
         list_timeframes_cmd = subparsers.add_parser(

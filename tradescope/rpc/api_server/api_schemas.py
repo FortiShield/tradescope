@@ -474,7 +474,7 @@ class PairListsPayload(ExchangeModePayloadMixin, BaseModel):
 
 
 class FreqAIModelListResponse(BaseModel):
-    freqaimodels: List[str]
+    tradeaimodels: List[str]
 
 
 class StrategyResponse(BaseModel):

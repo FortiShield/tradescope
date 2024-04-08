@@ -681,12 +681,12 @@ AVAILABLE_CLI_OPTIONS = {
     ),
     "freqaimodel": Arg(
         '--freqaimodel',
-        help='Specify a custom freqaimodels.',
+        help='Specify a custom tradeaimodels.',
         metavar='NAME',
     ),
     "freqaimodel_path": Arg(
         '--freqaimodel-path',
-        help='Specify additional lookup path for freqaimodels.',
+        help='Specify additional lookup path for tradeaimodels.',
         metavar='PATH',
     ),
     "freqai_backtest_live_models": Arg(

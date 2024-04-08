@@ -27,7 +27,7 @@ class ReinforcementLearner(BaseReinforcementLearningModel):
     class MyCoolRLModel(ReinforcementLearner):
     ```
 
-    Save the file to `user_data/freqaimodels`, then run it with:
+    Save the file to `user_data/tradeaimodels`, then run it with:
 
     tradescope trade --freqaimodel MyCoolRLModel --config config.json --strategy SomeCoolStrat
 

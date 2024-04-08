@@ -370,14 +370,14 @@ def list_exchanges(config=Depends(get_config)):
     }
 
 
-@router.get('/freqaimodels', response_model=FreqAIModelListResponse, tags=['freqai'])
-def list_freqaimodels(config=Depends(get_config)):
+@router.get('/tradeaimodels', response_model=FreqAIModelListResponse, tags=['freqai'])
+def list_tradeaimodels(config=Depends(get_config)):
     from tradescope.resolvers.freqaimodel_resolver import FreqaiModelResolver
     models = FreqaiModelResolver.search_all_objects(
         config, False)
     models = sorted(models, key=lambda x: x['name'])
 
-    return {'freqaimodels': [x['name'] for x in models]}
+    return {'tradeaimodels': [x['name'] for x in models]}
 
 
 @router.get('/available_pairs', response_model=AvailablePairs, tags=['candle data'])

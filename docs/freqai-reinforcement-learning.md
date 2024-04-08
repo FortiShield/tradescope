@@ -34,7 +34,7 @@ Setting up and running a Reinforcement Learning model is the same as running a R
 tradescope trade --freqaimodel ReinforcementLearner --strategy MyRLStrategy --config config.json
 ```
 
-where `ReinforcementLearner` will use the templated `ReinforcementLearner` from `freqai/prediction_models/ReinforcementLearner` (or a custom user defined one located in `user_data/freqaimodels`). The strategy, on the other hand, follows the same base [feature engineering](freqai-feature-engineering.md) with `feature_engineering_*` as a typical Regressor. The difference lies in the creation of the targets, Reinforcement Learning doesn't require them. However, FreqAI requires a default (neutral) value to be set in the action column:
+where `ReinforcementLearner` will use the templated `ReinforcementLearner` from `freqai/prediction_models/ReinforcementLearner` (or a custom user defined one located in `user_data/tradeaimodels`). The strategy, on the other hand, follows the same base [feature engineering](freqai-feature-engineering.md) with `feature_engineering_*` as a typical Regressor. The difference lies in the creation of the targets, Reinforcement Learning doesn't require them. However, FreqAI requires a default (neutral) value to be set in the action column:
 
 ```python
     def set_freqai_targets(self, dataframe, **kwargs) -> DataFrame:
@@ -139,7 +139,7 @@ Parameter details can be found [here](freqai-parameter-table.md), but in general
     Warning!
     The reward function provided with the Tradescope source code is a showcase of functionality designed to show/test as many possible environment control features as possible. It is also designed to run quickly on small computers. This is a benchmark, it is *not* for live production. Please beware that you will need to create your own custom_reward() function or use a template built by other users outside of the Tradescope source code.
 
-As you begin to modify the strategy and the prediction model, you will quickly realize some important differences between the Reinforcement Learner and the Regressors/Classifiers. Firstly, the strategy does not set a target value (no labels!). Instead, you set the `calculate_reward()` function inside the `MyRLEnv` class (see below). A default `calculate_reward()` is provided inside `prediction_models/ReinforcementLearner.py` to demonstrate the necessary building blocks for creating rewards, but this is *not* designed for production. Users *must* create their own custom reinforcement learning model class or use a pre-built one from outside the Tradescope source code and save it to `user_data/freqaimodels`. It is inside the `calculate_reward()` where creative theories about the market can be expressed. For example, you can reward your agent when it makes a winning trade, and penalize the agent when it makes a losing trade. Or perhaps, you wish to reward the agent for entering trades, and penalize the agent for sitting in trades too long. Below we show examples of how these rewards are all calculated:
+As you begin to modify the strategy and the prediction model, you will quickly realize some important differences between the Reinforcement Learner and the Regressors/Classifiers. Firstly, the strategy does not set a target value (no labels!). Instead, you set the `calculate_reward()` function inside the `MyRLEnv` class (see below). A default `calculate_reward()` is provided inside `prediction_models/ReinforcementLearner.py` to demonstrate the necessary building blocks for creating rewards, but this is *not* designed for production. Users *must* create their own custom reinforcement learning model class or use a pre-built one from outside the Tradescope source code and save it to `user_data/tradeaimodels`. It is inside the `calculate_reward()` where creative theories about the market can be expressed. For example, you can reward your agent when it makes a winning trade, and penalize the agent when it makes a losing trade. Or perhaps, you wish to reward the agent for entering trades, and penalize the agent for sitting in trades too long. Below we show examples of how these rewards are all calculated:
 
 !!! note "Hint"
     The best reward functions are ones that are continuously differentiable, and well scaled. In other words, adding a single large negative penalty to a rare event is not a good idea, and the neural net will not be able to learn that function. Instead, it is better to add a small negative penalty to a common event. This will help the agent learn faster. Not only this, but you can help improve the continuity of your rewards/penalties by having them scale with severity according to some linear/exponential functions. In other words, you'd slowly scale the penalty as the duration of the trade increases. This is better than a single large penalty occurring at a single point in time.
@@ -153,7 +153,7 @@ class MyCoolRLModel(ReinforcementLearner):
     """
     User created RL prediction model.
 
-    Save this file to `tradescope/user_data/freqaimodels`
+    Save this file to `tradescope/user_data/tradeaimodels`
 
     then use it with:
 

@@ -218,19 +218,19 @@ tradescope list-strategies --strategy-path ~/.tradescope/strategies/
 
 ## List freqAI models
 
-Use the `list-freqaimodels` subcommand to see all freqAI models available.
+Use the `list-tradeaimodels` subcommand to see all freqAI models available.
 
 This subcommand is useful for finding problems in your environment with loading freqAI models: modules with models that contain errors and failed to load are printed in red (LOAD FAILED), while models with duplicate names are printed in yellow (DUPLICATE NAME).
 
 ```
-usage: tradescope list-freqaimodels [-h] [-v] [--logfile FILE] [-V] [-c PATH]
+usage: tradescope list-tradeaimodels [-h] [-v] [--logfile FILE] [-V] [-c PATH]
                                    [-d PATH] [--userdir PATH]
                                    [--freqaimodel-path PATH] [-1] [--no-color]
 
 optional arguments:
   -h, --help            show this help message and exit
   --freqaimodel-path PATH
-                        Specify additional lookup path for freqaimodels.
+                        Specify additional lookup path for tradeaimodels.
   -1, --one-column      Print output in one column.
   --no-color            Disable colorization of hyperopt results. May be
                         useful if you are redirecting output to a file.
